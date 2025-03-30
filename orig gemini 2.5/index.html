@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Scent - Natural Aromatherapy for Mind & Body Wellness</title> <!-- Improved Title -->
+    <meta name="description" content="Discover premium essential oils, natural soaps, and aromatherapy solutions from The Scent. Expertly formulated with high-quality global ingredients to promote mental and physical health."> <!-- Improved Meta Description -->
+
+    <!-- Preconnect/Prefetch for performance (Example: Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"> <!-- Example Fonts -->
+
+    <!-- Link to your main CSS file -->
+    <link rel="stylesheet" href="style.css"> <!-- Create this file for styling -->
+
+    <!-- Favicon Links (generate using a favicon generator) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Add Schema.org markup if appropriate (e.g., for Organization, Product) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "The Scent",
+      "url": "https://www.scent.com.sg/", // Replace with actual URL
+      "logo": "https://www.scent.com.sg/wp-content/uploads/2015/10/logo-text.png" // Replace with actual logo URL
+      // Add more details like address, contact point etc.
+    }
+    </script>
+
+</head>
+<body class="landing-page">
+
+    <!-- Header Section -->
+    <header class="site-header" id="site-header">
+        <div class="container header-container">
+            <div class="logo">
+                <a href="/">
+                    <!-- Use SVG logo for scalability if possible, otherwise use PNG -->
+                    <img src="images/the-scent-logo.png" alt="The Scent Logo">
+                    <!-- <img src="//www.scent.com.sg/wp-content/uploads/2015/10/logo-text.png" alt="The Scent Logo"> -->
+                </a>
+            </div>
+            <nav class="main-navigation" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="#products">Shop</a></li> <!-- Link to product section or shop page -->
+                    <li><a href="#story">Our Story</a></li>
+                    <li><a href="#why-us">Why The Scent</a></li>
+                    <li><a href="/blog">Wellness Hub</a></li> <!-- Link to potential blog -->
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <a href="/cart" class="cart-icon" aria-label="View Shopping Cart">
+                    <!-- Add Cart Icon (e.g., SVG or Font Awesome) -->
+                    <span class="cart-count">0</span> <!-- Update dynamically -->
+                </a>
+                <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" aria-controls="main-navigation">
+                    <!-- Hamburger Icon -->
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main id="main-content">
+
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+             <!-- Background Video/Image applied via CSS -->
+             <!-- Add an overlay div via CSS for text readability -->
+            <div class="container hero__content">
+                <h1 class="hero__title">Find Your Calm, Naturally</h1>
+                <p class="hero__subtitle">Experience the harmony of pure aromatherapy with The Scent's premium essential oils and natural soaps, crafted for your mind and body wellness.</p>
+                <a href="#products" class="button button--primary hero__cta">Explore Our Collections</a>
+            </div>
+             <!-- Optional: Add subtle scroll down indicator -->
+        </section>
+
+        <!-- Introduction / Problem-Solution Section -->
+        <section class="intro section-padding" id="intro">
+            <div class="container intro-container">
+                <h2 class="section-title">Escape the Noise, Embrace Nature</h2>
+                <p class="section-subtitle">In today's fast-paced world, stress is common. The Scent offers a sanctuary through the power of aromatherapy, using nature's finest ingredients to help you restore balance and find tranquility.</p>
+                 <!-- Optional: Could add a small visual element here -->
+            </div>
+        </section>
+
+        <!-- Product Categories/Featured Section -->
+        <section class="products section-padding--large" id="products">
+            <div class="container">
+                <h2 class="section-title section-title--centered">Crafted for Your Wellbeing</h2>
+                <div class="product-grid">
+                    <article class="product-card">
+                        <a href="/product-category/essential-oils" class="product-card__link">
+                            <div class="product-card__image-wrapper">
+                                <img src="images/essential-oils-category.jpg" alt="Glass bottles of essential oils with lavender" class="product-card__image" loading="lazy">
+                                <!-- Add subtle hover effect via CSS -->
+                            </div>
+                            <div class="product-card__content">
+                                <h3 class="product-card__title">Pure Essential Oils</h3>
+                                <p class="product-card__description">Discover a world of therapeutic aromas, sourced for purity and potency.</p>
+                                <span class="button button--secondary button--small">Shop Oils</span>
+                            </div>
+                        </a>
+                    </article>
+                    <article class="product-card">
+                        <a href="/product-category/natural-soaps" class="product-card__link">
+                            <div class="product-card__image-wrapper">
+                                <img src="images/natural-soap-category.jpg" alt="Artisan natural soaps stacked" class="product-card__image" loading="lazy">
+                                <!-- Add subtle hover effect via CSS -->
+                            </div>
+                            <div class="product-card__content">
+                                <h3 class="product-card__title">Natural Artisan Soaps</h3>
+                                <p class="product-card__description">Indulge your skin with custom-blend, premium soaps infused with natural scents.</p>
+                                <span class="button button--secondary button--small">Shop Soaps</span>
+                            </div>
+                        </a>
+                    </article>
+                    <article class="product-card">
+                        <a href="/product-category/diffusers" class="product-card__link">
+                             <div class="product-card__image-wrapper">
+                                <img src="images/diffusers-category.jpg" alt="A stylish aroma diffuser emitting mist" class="product-card__image" loading="lazy">
+                                <!-- Add subtle hover effect via CSS -->
+                             </div>
+                            <div class="product-card__content">
+                                <h3 class="product-card__title">Aroma Diffusers</h3>
+                                <p class="product-card__description">Enhance your space with our curated selection of diffusers and revitalizers.</p>
+                                <span class="button button--secondary button--small">Shop Diffusers</span>
+                            </div>
+                        </a>
+                    </article>
+                     <!-- Add more cards if needed, or link to a 'Shop All' page -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us / USP Section -->
+        <section class="why-us section-padding" id="why-us" style="background-color: #f9f9f9;"> <!-- Example subtle background color -->
+            <div class="container">
+                <h2 class="section-title section-title--centered">Experience The Scent Difference</h2>
+                <div class="usp-grid">
+                    <div class="usp-item">
+                         <!-- Add Icon (SVG/Font Awesome) -->
+                        <h3 class="usp-item__title">Premium Global Ingredients</h3>
+                        <p class="usp-item__text">We meticulously source the highest quality raw materials from around the world for unparalleled purity.</p>
+                    </div>
+                    <div class="usp-item">
+                         <!-- Add Icon -->
+                        <h3 class="usp-item__title">Unique Expert Formulations</h3>
+                        <p class="usp-item__text">Our deep knowledge allows us to create harmonious, balanced, and effective aromatherapy blends.</p>
+                    </div>
+                    <div class="usp-item">
+                         <!-- Add Icon -->
+                        <h3 class="usp-item__title">Holistic Wellness Focus</h3>
+                        <p class="usp-item__text">Our products are designed to support both your mental and physical health naturally.</p>
+                    </div>
+                     <div class="usp-item">
+                         <!-- Add Icon -->
+                        <h3 class="usp-item__title">Trusted Worldwide</h3>
+                        <p class="usp-item__text">From local institutions to global customers, our quality and creativity are recognized internationally.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits / Sensory Section -->
+        <section class="benefits section-padding--large" id="benefits">
+            <!-- Consider a parallax background image here via CSS -->
+            <div class="container benefits-container">
+                <h2 class="section-title section-title--centered section-title--light">Unlock a State of Balance</h2> <!-- Light title if dark background -->
+                <p class="section-subtitle section-subtitle--centered section-subtitle--light">Whether you seek relaxation, rejuvenation, focus, or simply a moment of peace, our scents provide a natural pathway to enhance your daily life.</p>
+                 <!-- Could add visual cards for Relax, Energize, Balance etc. -->
+                <div class="benefit-highlight">
+                    <img src="images/benefit-relaxation.jpg" alt="Woman relaxing peacefully" loading="lazy">
+                    <p>Find deep relaxation and unwind from daily stress.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Story Section -->
+        <section class="story section-padding" id="story">
+            <div class="container story-container">
+                 <div class="story__image-column">
+                    <img src="images/the-scent-story-image.jpg" alt="Natural ingredients or hands crafting soap" loading="lazy">
+                     <!-- Could be an image of ingredients, workshop, founder etc. -->
+                 </div>
+                 <div class="story__text-column">
+                    <h2 class="section-title">Our Passion for Purity & Wellbeing</h2>
+                    <p>The Scent was born from a belief in the profound power of nature to heal and harmonize. We produce a whole range of aroma therapeutic products, importing high-quality raw materials from across the globe and exporting our unique finished goods back to these regions.</p>
+                    <p>This global trust is built on our unique, creative formulations and deep knowledge of aromatherapy applications. We strive to create perfectly balanced and well-rounded products to combat the ever-increasing stress of modern life, making aromatherapy more relevant than ever.</p>
+                    <p>We are committed to integrity, good business practices, and building truthful relationships with our valued customers worldwide.</p>
+                    <a href="/about-us" class="button button--secondary">Learn More About Us</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials section-padding" id="testimonials" style="background-color: #f9f9f9;">
+            <div class="container">
+                <h2 class="section-title section-title--centered">What Our Community Says</h2>
+                 <!-- Implement using a simple slider (e.g., Swiper.js) or static cards -->
+                <div class="testimonial-slider"> <!-- Add slider JS controls -->
+                    <div class="testimonial-slide">
+                        <blockquote class="testimonial__quote">
+                            <p>"The Lavender oil is absolutely divine! It helps me unwind after a long day like nothing else. Truly high quality."</p>
+                            <cite class="testimonial__author">- Sarah L., Singapore</cite>
+                        </blockquote>
+                    </div>
+                    <div class="testimonial-slide">
+                         <blockquote class="testimonial__quote">
+                            <p>"I ordered a custom soap bar and it's wonderful. The scent is unique and it feels amazing on my skin. Worth every penny!"</p>
+                            <cite class="testimonial__author">- David C., Australia</cite>
+                        </blockquote>
+                    </div>
+                     <!-- Add more slides -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA / Newsletter Section -->
+        <section class="cta section-padding--large" id="cta">
+            <div class="container cta-container">
+                <h2 class="section-title section-title--centered">Join Our Wellness Journey</h2>
+                <p class="section-subtitle section-subtitle--centered">Sign up for exclusive tips, new product announcements, and special offers from The Scent.</p>
+                <form class="newsletter-form" action="#" method="post"> <!-- Update action -->
+                    <label for="newsletter-email" class="sr-only">Email Address</label>
+                    <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
+                    <button type="submit" class="button button--primary">Subscribe</button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer section-padding" id="site-footer">
+        <div class="container footer-container">
+            <div class="footer-grid">
+                <div class="footer-column footer-column--about">
+                    <img src="images/the-scent-logo-footer.png" alt="The Scent Logo" class="footer-logo" loading="lazy">
+                    <!-- <img src="//www.scent.com.sg/wp-content/uploads/2015/10/logo-text.png" alt="The Scent Logo" class="footer-logo" loading="lazy"> -->
+                    <p>Promoting mental & physical health through the power of natural aromatherapy.</p>
+                     <!-- Add Contact Info -->
+                     <p>+65 6909 3018<br>50 Ubi Ave 3 #01-21 Frontier, Singapore 408866<br>bnctherapyllp@gmail.com</p>
+                </div>
+                <div class="footer-column footer-column--links">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul>
+                        <li><a href="#products">Shop</a></li>
+                        <li><a href="#story">Our Story</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/blog">Wellness Hub</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-column--categories">
+                    <h3 class="footer-heading">Shop Categories</h3>
+                     <ul>
+                        <li><a href="/product-category/essential-oils">Essential Oils</a></li>
+                        <li><a href="/product-category/natural-soaps">Natural Soaps</a></li>
+                        <li><a href="/product-category/diffusers">Diffusers</a></li>
+                        <li><a href="/product-category/body-care">Body Care</a></li>
+                        <li><a href="/diy-class">DIY Soap Class</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column footer-column--social">
+                    <h3 class="footer-heading">Connect With Us</h3>
+                    <ul class="social-links">
+                        <li><a href="https://www.facebook.com/Balance-Cleanse-Therapy-442175389281378" target="_blank" rel="noopener noreferrer" aria-label="Facebook"> <!-- Icon --> FB </a></li>
+                        <li><a href="https://www.instagram.com/scent_solution/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"> <!-- Icon --> IG </a></li>
+                        <li><a href="mailto:bnctherapyllp@gmail.com" aria-label="Email"> <!-- Icon --> Mail </a></li>
+                        <!-- Add other relevant social links -->
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> The Scent by Balance and Cleanse Therapy LLP. All Rights Reserved.</p>
+                <ul>
+                    <li><a href="/privacy-policy">Privacy Policy</a></li>
+                    <li><a href="/terms-of-service">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Back to Top Button (optional) -->
+    <a href="#site-header" class="back-to-top" aria-label="Back to Top">^</a>
+
+    <!-- Minimal JavaScript (Example: Get Current Year, Mobile Menu Toggle) -->
+    <script>
+        // Simple script for current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Basic mobile menu toggle (example - needs refinement)
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+        const mainNav = document.querySelector('.main-navigation');
+        if (menuToggle && mainNav) {
+            menuToggle.addEventListener('click', () => {
+                const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.setAttribute('aria-expanded', !isExpanded);
+                mainNav.classList.toggle('is-active'); // You'll need CSS for .is-active
+            });
+        }
+    </script>
+
+    <!-- Add other necessary JS files here (e.g., for sliders, animations) -->
+    <!-- <script src="js/swiper-bundle.min.js"></script> -->
+    <!-- <script src="js/animations.js"></script> -->
+
+</body>
+</html>
