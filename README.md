@@ -1,5 +1,5 @@
 ## [The-Scent](http://www.scent.com.sg/)
-
+[scent](https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent1.jpg) & [soap](https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/soap1.jpg)  
 If you want to use your custom HTML page without WordPress altering it, you can still rename it to index.php but avoid using WordPress template tags. Simply include the PHP template name at the top:
 
 ```
