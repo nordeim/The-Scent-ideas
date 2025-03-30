@@ -77,3 +77,22 @@ In WordPress, create a new page or edit an existing one, and in the **Page Attri
 For more detailed steps, you can check the guide on creating WordPress themes.
 
 ---
+Below is the HTML document that displays the two images:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Image Showcase</title>
+</head>
+<body>
+  <img src="https://moccasin-rhinoceros-989382.hostingersite.com/wp-content/uploads/2025/03/scent1.jpg" alt="Scent Image">
+  <img src="https://moccasin-rhinoceros-989382.hostingersite.com/wp-content/uploads/2025/03/soap1.jpg" alt="Soap Image">
+</body>
+</html>
+``` 
+
+This document sets up a basic HTML page with a title in the head and the two images in the body. Simply save this as an `.html` file and open it in your browser to view the images.  
+https://chatgpt.com/share/67e8ff5a-899c-8000-91a5-c35c427307c3
