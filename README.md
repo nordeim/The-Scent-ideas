@@ -1,5 +1,15 @@
 ## [The-Scent](http://www.scent.com.sg/)
 
+If you want to use your custom HTML page without WordPress altering it, you can still rename it to index.php but avoid using WordPress template tags. Simply include the PHP template name at the top:
+
+```
+&lt;?php
+/* Template Name: CustomPage */
+?&gt;
+```
+Then, upload this file to your theme folder. When you create a new page in WordPress, select "CustomPage" from the template dropdown. This way, WordPress will use your static HTML content as-is without modification.
+
+---
 # Creating a Custom Page Using an HTML File in WordPress
 
 To create a custom page using an HTML file in WordPress, follow these steps:
