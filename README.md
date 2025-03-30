@@ -10,6 +10,29 @@ If you want to use your custom HTML page without WordPress altering it, you can 
 Then, upload this file to your theme folder. When you create a new page in WordPress, select "CustomPage" from the template dropdown. This way, WordPress will use your static HTML content as-is without modification.
 
 ---
+The error indicates that your theme package is missing the style.css file, which is essential for WordPress themes. This file should include theme information and styles.
+
+To fix this:
+
+Create a style.css File: In your theme folder, add a style.css file with the following header information:
+
+```
+/*
+Theme Name: Your Theme Name
+Theme URI: http://example.com
+Author: Your Name
+Author URI: http://example.com
+Description: A brief description of the theme.
+Version: 1.0
+*/  
+```
+Add Styles: Include any CSS styles you want for your theme below the header.
+
+Repack and Upload: Zip the theme folder again and upload it through the WordPress theme installer.
+
+This should resolve the installation issue.
+
+---
 # Creating a Custom Page Using an HTML File in WordPress
 
 To create a custom page using an HTML file in WordPress, follow these steps:
