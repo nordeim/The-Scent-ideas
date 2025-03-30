@@ -14,7 +14,7 @@ The error indicates that your theme package is missing the style.css file, which
 
 To fix this:
 
-Create a style.css File: In your theme folder, add a style.css file with the following header information:
+1. Create a style.css File: In your theme folder, add a style.css file with the following header information:
 
 ```
 /*
@@ -26,11 +26,26 @@ Description: A brief description of the theme.
 Version: 1.0
 */  
 ```
-Add Styles: Include any CSS styles you want for your theme below the header.
+2. Add Styles: Include any CSS styles you want for your theme below the header.
 
-Repack and Upload: Zip the theme folder again and upload it through the WordPress theme installer.
+3. Repack and Upload: Zip the theme folder again and upload it through the WordPress theme installer.
 
 This should resolve the installation issue.
+
+---
+Yes, you can create an empty style.css file with just the required header information. This file is mandatory for WordPress to recognize and install your theme, even if you don't need it for styling purposes. Just ensure the header is correctly formatted as shown:
+
+```
+/*
+Theme Name: Your Theme Name
+Theme URI: http://example.com
+Author: Your Name
+Author URI: http://example.com
+Description: A brief description of the theme.
+Version: 1.0
+*/  
+```
+This will allow your custom theme to be installed without any issues.
 
 ---
 # Creating a Custom Page Using an HTML File in WordPress
