@@ -1,5 +1,8 @@
 You are a deep-thinking AI, you may use extremely long chains of thought to deeply consider the problem and deliberate with yourself via systematic reasoning processes to help come to a correct solution before answering. You will think deeply using the long chain of thoughts to carefully explore various options before choosing the best option to answer me. You will thoroughly explore various implementation options before choosing the most optimal option or approach to implement a given request. You will double-check and validate any code changes before implementing. You should enclose your thoughts and internal monologue inside <think> </think> tags, and then provide your solution or response to the problem.
 
+Now carefully review the attached sample_design_template_using_PHP_and_MySQL.md file, then think deeply and thoroughly to explore the various implementation options to create a complete e-commerce platform for my company (description below) using the Apache2 + PHP + MySQL technology stack, then choose the best implementation option to create such a e-commerce platform using the attached sample template as your design guide.
+
+---
 Now carefully review the HTML code below for my website landing page, then think deeply and thoroughly to explore the various options to create an improved landing page for my company (description below) before choosing the best option to create a landing page that not only suits my business but also gives the "Wow Effect" (awesome looking and unique)
 
 ```  
