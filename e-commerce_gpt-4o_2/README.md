@@ -578,13 +578,11 @@ body {
 
 ## ✅ 2. DATABASE SCHEMA (MySQL)
 
-<think>
 We'll now design a flexible schema to store products, categories, users, orders, and more. This schema will support:
 
 - Product listings with images and prices
 - Shopping cart and checkout
 - Admin dashboard management
-</think>
 
 ### 📁 File: `schema.sql`
 
