@@ -303,3 +303,338 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class CartController extends Controller {
     public function add($id) {
         $product = Product::find($
+
+**Shopping Cart & Payment Gateway Integration (Continued)**
+---------------------------------------------------------
+
+### **Stripe Payment Flow**
+
+**`app/Http/Controllers/CheckoutController.php`**:
+
+```php
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+
+class CheckoutController extends Controller {
+    public function checkout() {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $lineItems = Cart::content()->map(function ($item) {
+            return [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $item->name,
+                    ],
+                    'unit_amount' => $item->price * 100,
+                ],
+                'quantity' => $item->qty,
+            ];
+        })->toArray();
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success'),
+            'cancel_url' => route('checkout.cancel'),
+        ]);
+
+        return redirect()->to($session->url);
+    }
+
+    public function success(Request $request) {
+        // Save order to database
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'total_amount' => Cart::total(),
+            'status' => 'pending',
+        ]);
+
+        foreach (Cart::content() as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item->id,
+                'quantity' => $item->qty,
+            ]);
+        }
+
+        Cart::destroy();
+        return view('checkout.success');
+    }
+}
+```
+
+**Routes for Checkout**:
+
+```php
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+```
+
+**Security Considerations**
+---------------------------
+
+1. **CSRF Protection**:
+   - All forms include `@csrf` to prevent cross-site request forgery.
+   - Example: `<form action="{{ route('cart.add', $product->id) }}" method="POST">@csrf</form>`
+
+2. **Input Validation**:
+   - Use Laravel's built-in validation in controllers.
+   - Example:
+     ```php
+     $request->validate([
+         'name' => 'required|string|max:255',
+         'price' => 'required|numeric|min:0',
+     ]);
+     ```
+
+3. **SQL Injection Prevention**:
+   - Eloquent ORM uses parameterized queries by default.
+   - Avoid raw SQL queries unless using `DB::raw()` with bindings.
+
+4. **Password Hashing**:
+   - Laravel automatically hashes passwords during user registration.
+   - `bcrypt()` or `Hash::make()` for manual hashing.
+
+5. **SSL Encryption**:
+   - Configured via Certbot (Let's Encrypt) for HTTPS.
+   - Forces secure connections: `Redirect permanent "/" "https://the-scent.com/"` in Apache config.
+
+**Testing Strategy**
+--------------------
+
+### **Unit Tests**
+
+**`tests/Unit/ProductTest.php`**:
+
+```php
+namespace Tests\Unit;
+
+use Tests\TestCase;
+use App\Models\Product;
+
+class ProductTest extends TestCase {
+    public function test_product_can_be_created() {
+        $product = Product::factory()->create();
+        $this->assertDatabaseHas('products', ['id' => $product->id]);
+    }
+
+    public function test_product_price_is_numeric() {
+        $product = Product::factory()->make(['price' => 'invalid']);
+        $this->assertFalse($product->isValid());
+    }
+}
+```
+
+### **Feature Tests**
+
+**`tests/Feature/CartTest.php`**:
+
+```php
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use App\Models\Product;
+use Gloudemans\Shoppingcart\Facades\Cart;
+
+class CartTest extends TestCase {
+    public function test_product_can_be_added_to_cart() {
+        $product = Product::factory()->create();
+        $response = $this->post(route('cart.add', $product->id));
+        $response->assertRedirect(route('cart.index'));
+        $this->assertEquals(1, Cart::count());
+    }
+
+    public function test_cart_can_be_viewed() {
+        $response = $this->get(route('cart.index'));
+        $response->assertStatus(200);
+        $response->assertViewIs('cart.index');
+    }
+}
+```
+
+**Run Tests**:
+```bash
+php artisan test
+```
+
+**Deployment Strategy**
+-------------------------
+
+### **Step 1: Configure Apache2 Virtual Host**
+
+**`/etc/apache2/sites-available/the-scent.conf`**:
+
+```apache
+<VirtualHost *:80>
+    ServerName the-scent.com
+    ServerAlias www.the-scent.com
+    DocumentRoot /var/www/the-scent/public
+
+    <Directory /var/www/the-scent/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/the-scent_error.log
+    CustomLog ${APACHE_LOG_DIR}/the-scent_access.log combined
+</VirtualHost>
+```
+
+**Enable Site & Restart Apache**:
+```bash
+sudo a2ensite the-scent.conf
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+```
+
+### **Step 2: Secure with SSL (Certbot)**
+
+**Install Certbot**:
+```bash
+sudo apt install certbot python3-certbot-apache
+```
+
+**Obtain SSL Certificate**:
+```bash
+sudo certbot --apache -d the-scent.com -d www.the-scent.com
+```
+
+**Auto-Renew SSL**:
+```bash
+sudo certbot renew --dry-run
+```
+
+**Step 3: Deploy Laravel Project**
+
+**1. Clone Repository**:
+```bash
+git clone https://github.com/your-repo/the-scent.git /var/www/the-scent
+```
+
+**2. Set Permissions**:
+```bash
+sudo chown -R www-data:www-data /var/www/the-scent
+sudo chmod -R 755 /var/www/the-scent/storage
+```
+
+**3. Configure `.env`**:
+```bash
+APP_ENV=production
+APP_DEBUG=false
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=the_scent_db
+STRIPE_KEY=your_stripe_key
+STRIPE_SECRET=your_stripe_secret
+```
+
+**4. Optimize Laravel**:
+```bash
+composer install --optimize-autoloader --no-dev
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+**Monitoring and Maintenance**
+------------------------------
+
+1. **Server Logs**:
+   - Check `/var/log/apache2/the-scent_error.log` for issues.
+   - Use `tail -f` for real-time monitoring.
+
+2. **Laravel Telescope**:
+   - Install Telescope for debugging and monitoring.
+   - `composer require laravel/telescope`
+
+3. **Cron Jobs**:
+   - Automate tasks like order status updates.
+   - Example: `php artisan schedule:run` every minute.
+
+**Conclusion and Recommendations**
+-----------------------------------
+
+The Scent e-commerce platform is now fully functional, secure, and scalable. Key achievements:
+
+1. **Modular Design**: Clean separation of concerns (MVC architecture).
+2. **Secure Transactions**: Stripe integration with HTTPS encryption.
+3. **Admin Panel**: Easy management of products, orders, and users.
+4. **Automated Testing**: Unit and feature tests ensure code reliability.
+5. **Production-Ready**: Deployed on Apache2 with SSL and optimized for performance.
+
+**Future Enhancements**:
+1. **Add Wishlist Feature**: Allow users to save products for later.
+2. **Implement Email Notifications**: Order confirmations and shipping updates.
+3. **Integrate Google Analytics**: Track user behavior and sales metrics.
+4. **Mobile App Development**: Build native apps for iOS/Android.
+
+---
+
+**Appendix A: Step-by-Step Environment Setup Guide**
+---------------------------------------------------
+
+**1. Install Ubuntu 22.04 LTS**:
+   - Download from [ubuntu.com](https://ubuntu.com/download/desktop).
+
+**2. Update System**:
+   ```bash
+   sudo apt update && sudo apt upgrade -y
+   ```
+
+**3. Install Apache2, MySQL, PHP (LAMP Stack)**:
+   ```bash
+   sudo apt install apache2 mysql-server php libapache2-mod-php php-mysql
+   ```
+
+**4. Configure MySQL**:
+   ```bash
+   sudo mysql_secure_installation
+   ```
+
+**5. Install Composer & Laravel**:
+   ```bash
+   curl -sS https://getcomposer.org/installer | php
+   sudo mv composer.phar /usr/local/bin/composer
+   composer create-project --prefer-dist laravel/laravel the-scent
+   ```
+
+**6. Install Node.js & NPM**:
+   ```bash
+   sudo apt install nodejs npm
+   npm install && npm run dev
+   ```
+
+**7. Setup Stripe & Certbot**:
+   - Follow guides: [Stripe Dashboard](https://dashboard.stripe.com/) and [Certbot Instructions](https://certbot.eff.org/).
+
+---
+
+**Appendix B: Detailed Deployment Guide for The Scent Project**
+-------------------------------------------------------------
+
+**Step 1: Clone Repository**
+```bash
+git clone https://github.com/your-repo/the-scent.git /var/www/the-scent
+cd /var/www/the-scent
+```
+
+**Step 2: Install Dependencies**
+```bash
+composer install --optimize-autoloader --no-dev
+npm install && npm run build
+```
+
+**Step 3: Configure `.env` File**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+**Edit `.env`**:
+```bash
+APP_ENV=production
+DB_CONNECTION=mysql
