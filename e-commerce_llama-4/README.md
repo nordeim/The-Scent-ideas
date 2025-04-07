@@ -86,9 +86,7 @@ Let's dive deep into the thought process to create an improved landing page and 
 5. **Phase 5**: Testing & Deployment.
    - Debug, optimize performance, launch on Apache2.
 
-Now, let's start crafting the **Improved Landing Page** (Phase 1). I'll provide a redesigned HTML structure with enhanced CSS and JS for the "Wow Effect."
-
-</think>
+Now, let's start crafting the **Improved Landing Page** (Phase 1). you will provide a redesigned HTML structure with enhanced CSS and JS for the "Wow Effect."
 
 **Improved Landing Page Code**
 ```html
@@ -807,3 +805,216 @@ Here's the **completed code**:
         });
 
         // Modal Logic
+
+Let's finish the JavaScript functionality and add the final touches.
+
+**Remaining JavaScript Tasks**
+-------------------------------
+
+1. **Modal Open/Close Logic**.
+2. **Testimonial Carousel** in the Story Section.
+3. **Mobile Menu Toggle**.
+4. **Smooth Scroll** for navigation links.
+5. **Newsletter Form Submission** (basic alert for now).
+
+**Final Validations**
+---------------------
+
+- Ensure all links have `target="_blank"` for external URLs.
+- Add `rel="noopener noreferrer"` for security.
+- Validate HTML/CSS via W3C Validators.
+
+Here's the **completed JavaScript code**:
+
+```javascript
+// Modal Logic
+function openModal(title, image) {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("modal-title").innerText = title;
+    document.getElementById("modal-image").src = image;
+}
+
+document.querySelector(".close-modal").addEventListener("click", function () {
+    document.getElementById("modal").style.display = "none";
+});
+
+// Close modal when clicking outside
+window.addEventListener("click", function (e) {
+    if (e.target === document.getElementById("modal")) {
+        document.getElementById("modal").style.display = "none";
+    }
+});
+
+// Testimonial Carousel
+let testimonials = document.querySelectorAll(".testimonial");
+let currentTestimonial = 0;
+
+function showNextTestimonial() {
+    testimonials[currentTestimonial].classList.remove("active");
+    currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+    testimonials[currentTestimonial].classList.add("active");
+}
+
+setInterval(showNextTestimonial, 5000); // Change every 5 seconds
+
+// Mobile Menu Toggle
+document.querySelector(".hamburger").addEventListener("click", function () {
+    document.querySelector("nav ul").classList.toggle("show");
+});
+
+// Smooth Scroll for Navigation Links
+document.querySelectorAll('nav ul li a').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+        // Close mobile menu after clicking
+        document.querySelector("nav ul").classList.remove("show");
+    });
+});
+
+// Newsletter Form Submission (Basic Alert)
+document.querySelector(".newsletter-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    alert("Thank you for subscribing to The Scent's newsletter!");
+    this.reset();
+});
+```
+
+**Full Final Code**:
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Scent – Premium Aromatherapy for Mind & Body Wellness</title>
+    <meta name="description" content="Discover premium aromatherapy products: essential oils and natural soaps crafted with globally sourced ingredients to promote mental and physical wellness. Experience The Scent.">
+    
+    <!-- OpenGraph Meta Tags -->
+    <meta property="og:title" content="The Scent – Natural Aromatherapy Solutions">
+    <meta property="og:description" content="High-quality essential oils and custom natural soaps for holistic well-being. Globally sourced, creatively formulated by The Scent.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent6.jpg">
+    <meta property="og:url" content="https://www.scent.com.sg/">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* All Previous CSS Styles (Hero, Products, Story, Footer, etc.) */
+        /* ... (Refer to the previous code blocks) */
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/logo.png" alt="The Scent Logo">
+        </div>
+        <nav>
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <canvas class="hero-canvas"></canvas>
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Welcome to The Scent</h1>
+            <div class="typed-text">
+                <span id="typed"></span>
+            </div>
+            <a href="#products" class="btn">Explore Our Products</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <h2 data-aos="fade-up">Our Signature Products</h2>
+        <div class="product-grid">
+            <div class="product-card" data-aos="zoom-in">
+                <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent2.jpg" alt="Essential Oil">
+                <div class="product-info">
+                    <h3>Lavender Bliss</h3>
+                    <p>Calming essential oil for better sleep.</p>
+                    <div class="rating">★★★★☆</div>
+                    <button class="btn btn-primary" onclick="openModal('Lavender Bliss', 'https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent2.jpg')">Quick View</button>
+                </div>
+            </div>
+            <!-- Repeat for other products -->
+        </div>
+    </section>
+
+    <!-- Quick View Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modal-image" src="" alt="Product Image">
+            <h3 id="modal-title"></h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+            <button class="btn btn-primary">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Story Section -->
+    <section id="story" class="story">
+        <div class="story-content" data-aos="fade-right">
+            <h2>Our Journey</h2>
+            <p>At The Scent, we believe in the power of nature. Our products are crafted with love, using globally sourced ingredients to bring harmony to your mind and body.</p>
+            <div class="testimonials">
+                <div class="testimonial active">"The Scent's lavender oil changed my sleep routine!" - Sarah</div>
+                <div class="testimonial">"Natural soaps that nourish my skin." - Mark</div>
+                <div class="testimonial">"Aromatherapy like never before!" - Emma</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="social-icons">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <p>&copy; 2025 The Scent. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        // All JavaScript Code (Typed.js, AOS, Modal, Testimonials, Menu Toggle, Smooth Scroll)
+        /* ... (Refer to the previous JS block) */
+    </script>
+</body>
+</html>
+```
+
+**Validation Checks**
+----------------------
+
+1. **HTML Validation**: Paste the code into [W3C HTML Validator](https://validator.w3.org/).
+2. **CSS Validation**: Check [W3C CSS Validator](https://jigsaw.w3.org/css-validator/).
+3. **Mobile Responsiveness**: Test on Chrome DevTools (F12 > Toggle Device Toolbar).
+
+**Next Steps**
+---------------
+
+1. **Setup PHP (Laravel)** for dynamic product management.
+2. **Design MySQL Schema** for users,
