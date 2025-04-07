@@ -1093,4 +1093,328 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ### 📁 File: `admin/dashboard.php`
 
+We’re now at the final step of transforming **The Scent** into a complete e-commerce platform using the Apache2 + PHP + MySQL stack. So far, we've implemented:
+
+1. ✅ Immersive homepage  
+2. ✅ Product detail page  
+3. ✅ Session-based cart system  
+4. ✅ Checkout & order processing  
+5. ✅ Thank you page  
+
+Now we will finish the final step:
+
+---
+
+## ✅ Step 4: Admin Panel (CRUD for products, view orders)
+
+---
+
+### 🛠️ Admin Panel Goals:
+- Admin login (basic auth)
+- Dashboard to:
+  - Add/Edit/Delete products
+  - View orders and order items
+
+We will now build:
+
+1. `admin/login.php`
+2. `admin/dashboard.php`
+3. `admin/products.php` – Manage products
+4. `admin/add_product.php` – Add new product
+5. `admin/edit_product.php` – Edit product
+6. `admin/delete_product.php` – Delete product
+7. `admin/orders.php` – View orders and order items
+
+Let’s proceed step-by-step.
+
+---
+
+## 🔐 1. `admin/login.php` – Secure Admin Login
+
 ```php
+<?php
+session_start();
+require '../includes/db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $stmt = $pdo->prepare("SELECT * FROM admins WHERE username = ?");
+    $stmt->execute([$username]);
+    $admin = $stmt->fetch();
+
+    if ($admin && password_verify($password, $admin['password'])) {
+        $_SESSION['admin_logged_in'] = true;
+        header("Location: dashboard.php");
+        exit;
+    } else {
+        $error = "Invalid credentials.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login - The Scent</title>
+</head>
+<body>
+    <h2>Admin Login</h2>
+    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+    <form method="post">
+        <input type="text" name="username" placeholder="Username" required><br><br>
+        <input type="password" name="password" placeholder="Password" required><br><br>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
+```
+
+---
+
+## 🔐 2. `admin/dashboard.php`
+
+```php
+<?php
+session_start();
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - The Scent</title>
+</head>
+<body>
+    <h1>Welcome to Admin Dashboard</h1>
+    <ul>
+        <li><a href="products.php">Manage Products</a></li>
+        <li><a href="orders.php">View Orders</a></li>
+        <li><a href="logout.php">Logout</a></li>
+    </ul>
+</body>
+</html>
+```
+
+---
+
+## 🛍️ 3. `admin/products.php` – Product List
+
+```php
+<?php
+session_start();
+require '../includes/db.php';
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$products = $pdo->query("SELECT * FROM products ORDER BY id DESC")->fetchAll();
+?>
+
+<h2>Products</h2>
+<a href="add_product.php">Add New Product</a>
+<table border="1" cellpadding="10">
+<tr>
+    <th>Name</th><th>Price</th><th>Image</th><th>Actions</th>
+</tr>
+<?php foreach ($products as $product): ?>
+<tr>
+    <td><?= htmlspecialchars($product['name']) ?></td>
+    <td>$<?= number_format($product['price'], 2) ?></td>
+    <td><img src="<?= $product['image'] ?>" width="80"></td>
+    <td>
+        <a href="edit_product.php?id=<?= $product['id'] ?>">Edit</a> |
+        <a href="delete_product.php?id=<?= $product['id'] ?>" onclick="return confirm('Delete this product?')">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>
+```
+
+---
+
+## ➕ 4. `admin/add_product.php`
+
+```php
+<?php
+session_start();
+require '../includes/db.php';
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'];
+    $desc = $_POST['description'];
+    $price = $_POST['price'];
+    $image = $_POST['image']; // URL or upload logic
+
+    $stmt = $pdo->prepare("INSERT INTO products (name, description, price, image) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$name, $desc, $price, $image]);
+
+    header("Location: products.php");
+    exit;
+}
+?>
+
+<h2>Add Product</h2>
+<form method="post">
+    <input type="text" name="name" placeholder="Product Name" required><br><br>
+    <textarea name="description" placeholder="Description"></textarea><br><br>
+    <input type="text" name="price" placeholder="Price" required><br><br>
+    <input type="text" name="image" placeholder="Image URL"><br><br>
+    <button type="submit">Add Product</button>
+</form>
+```
+
+---
+
+## ✏️ 5. `admin/edit_product.php`
+
+```php
+<?php
+session_start();
+require '../includes/db.php';
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$id = $_GET['id'];
+$stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->execute([$id]);
+$product = $stmt->fetch();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'];
+    $desc = $_POST['description'];
+    $price = $_POST['price'];
+    $image = $_POST['image'];
+
+    $stmt = $pdo->prepare("UPDATE products SET name = ?, description = ?, price = ?, image = ? WHERE id = ?");
+    $stmt->execute([$name, $desc, $price, $image, $id]);
+
+    header("Location: products.php");
+    exit;
+}
+?>
+
+<h2>Edit Product</h2>
+<form method="post">
+    <input type="text" name="name" value="<?= $product['name'] ?>" required><br><br>
+    <textarea name="description"><?= $product['description'] ?></textarea><br><br>
+    <input type="text" name="price" value="<?= $product['price'] ?>" required><br><br>
+    <input type="text" name="image" value="<?= $product['image'] ?>"><br><br>
+    <button type="submit">Update</button>
+</form>
+```
+
+---
+
+## ❌ 6. `admin/delete_product.php`
+
+```php
+<?php
+session_start();
+require '../includes/db.php';
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$id = $_GET['id'];
+$pdo->prepare("DELETE FROM products WHERE id = ?")->execute([$id]);
+
+header("Location: products.php");
+exit;
+```
+
+---
+
+## 📦 7. `admin/orders.php` – View Orders
+
+```php
+<?php
+session_start();
+require '../includes/db.php';
+
+if (!isset($_SESSION['admin_logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$orders = $pdo->query("SELECT o.id, u.name, o.total, o.created_at FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.id DESC")->fetchAll();
+?>
+
+<h2>Orders</h2>
+<table border="1" cellpadding="10">
+<tr>
+    <th>ID</th><th>Customer</th><th>Total</th><th>Date</th>
+</tr>
+<?php foreach ($orders as $order): ?>
+<tr>
+    <td><?= $order['id'] ?></td>
+    <td><?= htmlspecialchars($order['name']) ?></td>
+    <td>$<?= number_format($order['total'], 2) ?></td>
+    <td><?= $order['created_at'] ?></td>
+</tr>
+<?php endforeach; ?>
+</table>
+```
+
+---
+
+### 🔐 Admin Logout (`admin/logout.php`)
+
+```php
+<?php
+session_start();
+session_destroy();
+header("Location: login.php");
+```
+
+---
+
+## ✅ Admin Panel Summary
+
+| Feature            | Status |
+|--------------------|--------|
+| Admin login        | ✅     |
+| Product management | ✅     |
+| Order viewer       | ✅     |
+| Secure auth        | ✅     |
+
+---
+
+## ✅ Final Summary of The Scent E-Commerce Platform
+
+| Feature                            | Status |
+|------------------------------------|--------|
+| Immersive homepage                 | ✅     |
+| Product detail page                | ✅     |
+| Add to cart                        | ✅     |
+| View cart                          | ✅     |
+| Checkout + order saving            | ✅     |
+| Admin dashboard                    | ✅     |
+| Admin product CRUD                 | ✅     |
+| Admin order viewer                 | ✅     |
+
+---
+
+## 🧠 What's Next?
+
+You could further extend this system with:
+
+- Stripe/PayPal payment integration
+- Customer login + order history
+- Product
