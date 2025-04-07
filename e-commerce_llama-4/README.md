@@ -1376,4 +1376,312 @@ Route::resource('products', ProductController::class)->middleware('admin');
 **Step 6: Shopping Cart & Payment Gateway**
 --------------------------------------------
 
-Install
+1. **Install Laravel Shopping Cart Package**:
+   - Use `bumbummen99/shoppingcart` for cart functionality.
+2. **Implement Cart Logic**:
+   - Add to cart, remove from cart, update quantity.
+3. **Integrate Stripe Payment Gateway**:
+   - Use Laravel Cashier for Stripe payments.
+4. **Order Placement Workflow**:
+   - Create order, deduct stock, send confirmation email.
+
+**Step 7: Frontend Integration with Blade**
+--------------------------------------------
+
+1. **Create Blade Views**:
+   - `products.blade.php`, `cart.blade.php`, `checkout.blade.php`.
+2. **Dynamic Product Display**:
+   - Fetch products from the database and display.
+3. **AJAX for Cart Operations**:
+   - Add/remove items without page reload.
+
+**Step 8: Testing & Validation**
+-------------------------------
+
+1. **Write Unit & Feature Tests**:
+   - Test cart addition, payment success/failure.
+2. **Debug & Optimize**:
+   - Check for SQL injection, CSRF vulnerabilities.
+
+**Step 9: Deploy on Apache2**
+-----------------------------
+
+1. **Configure Virtual Host**:
+   - Point `the-scent.com` to Laravel's `public` folder.
+2. **Enable SSL (HTTPS)**:
+   - Use Let's Encrypt for free SSL.
+3. **Set Up Cron Jobs**:
+   - Run `php artisan schedule:run` for order status updates.
+
+</think>
+
+**Step 6.1: Install Shopping Cart Package**
+--------------------------------------------
+
+Run the following command:
+```bash
+composer require bumbummen99/shoppingcart
+```
+
+**Publish the config file (optional)**:
+```bash
+php artisan vendor:publish --provider="Gloudemans\Shoppingcart\ShoppingcartServiceProvider"
+```
+
+**Step 6.2: Implement Cart Logic**
+-----------------------------------
+
+Create a **CartController**:
+```bash
+php artisan make:controller CartController
+```
+
+**Edit `app/Http/Controllers/CartController.php`:**
+
+```php
+namespace App\Http\Controllers;
+
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Product;
+use Illuminate\Http\Request;
+
+class CartController extends Controller {
+    public function add(Request $request, $id) {
+        $product = Product::find($id);
+        Cart::add([
+            'id' => $product->id,
+            'name' => $product->name,
+            'qty' => 1,
+            'price' => $product->price,
+            'weight' => 0,
+            'options' => ['image' => $product->image]
+        ]);
+        return redirect()->route('cart.index')->with('success', 'Product added to cart!');
+    }
+
+    public function index() {
+        return view('cart.index', ['cartItems' => Cart::content()]);
+    }
+
+    public function remove($rowId) {
+        Cart::remove($rowId);
+        return redirect()->route('cart.index')->with('success', 'Product removed from cart!');
+    }
+
+    public function update(Request $request, $rowId) {
+        Cart::update($rowId, $request->qty);
+        return redirect()->route('cart.index')->with('success', 'Cart updated!');
+    }
+}
+```
+
+**Define Cart Routes in `web.php`:**
+
+```php
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+Route::delete('/cart/remove/{rowId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::patch('/cart/update/{rowId}', [CartController::class, 'update'])->name('cart.update');
+```
+
+**Step 6.3: Integrate Stripe Payment Gateway**
+----------------------------------------------
+
+Install **Laravel Cashier**:
+```bash
+composer require laravel/cashier
+php artisan cashier:install stripe
+```
+
+**Configure Stripe Keys in `.env`:**
+
+```env
+STRIPE_KEY=your_stripe_public_key
+STRIPE_SECRET=your_stripe_secret_key
+```
+
+**Create `CheckoutController`**:
+```bash
+php artisan make:controller CheckoutController
+```
+
+**Edit `app/Http/Controllers/CheckoutController.php`:**
+
+```php
+namespace App\Http\Controllers;
+
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
+
+class CheckoutController extends Controller {
+    public function checkout() {
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $lineItems = Cart::content()->map(function ($item) {
+            return [
+                'price_data' => [
+                    'currency' => 'usd',
+                    'product_data' => [
+                        'name' => $item->name,
+                    ],
+                    'unit_amount' => $item->price * 100,
+                ],
+                'quantity' => $item->qty,
+            ];
+        })->toArray();
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success'),
+            'cancel_url' => route('checkout.cancel'),
+        ]);
+
+        return redirect()->to($session->url);
+    }
+
+    public function success() {
+        // Save order to database
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'total_amount' => Cart::total(),
+            'status' => 'pending',
+        ]);
+
+        foreach (Cart::content() as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item->id,
+                'quantity' => $item->qty,
+            ]);
+        }
+
+        Cart::destroy();
+        return view('checkout.success');
+    }
+
+    public function cancel() {
+        return view('checkout.cancel');
+    }
+}
+```
+
+**Define Checkout Routes**:
+```php
+Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+```
+
+**Step 7: Create Blade Views**
+------------------------------
+
+**1. `resources/views/products.blade.php`:**
+
+```blade
+@extends('layouts.app')
+
+@section('content')
+    <h1>Our Products</h1>
+    <div class="product-grid">
+        @foreach($products as $product)
+            <div class="product-card">
+                <img src="{{ $product->image }}" alt="{{ $product->name }}">
+                <h3>{{ $product->name }}</h3>
+                <p>${{ $product->price }}</p>
+                <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                    @csrf
+                    <button type="submit">Add to Cart</button>
+                </form>
+            </div>
+        @endforeach
+    </div>
+@endsection
+```
+
+**2. `resources/views/cart/index.blade.php`:**
+
+```blade
+@extends('layouts.app')
+
+@section('content')
+    <h1>Your Cart</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($cartItems as $item)
+                <tr>
+                    <td>{{ $item->name }}</td>
+                    <td>${{ $item->price }}</td>
+                    <td>
+                        <form action="{{ route('cart.update', $item->rowId) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <input type="number" name="qty" value="{{ $item->qty }}">
+                            <button type="submit">Update</button>
+                        </form>
+                    </td>
+                    <td>${{ $item->subtotal }}</td>
+                    <td>
+                        <form action="{{ route('cart.remove', $item->rowId) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+    <a href="{{ route('checkout') }}">Proceed to Checkout</a>
+@endsection
+```
+
+**Step 8: Testing & Validation**
+---------------------------------
+
+**Write Tests in `tests/Feature/CartTest.php`:**
+
+```php
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use App\Models\Product;
+use Gloudemans\Shoppingcart\Facades\Cart;
+
+class CartTest extends TestCase {
+    public function test_product_can_be_added_to_cart() {
+        $product = Product::factory()->create();
+        $response = $this->post(route('cart.add', $product->id));
+        $response->assertRedirect(route('cart.index'));
+        $this->assertEquals(1, Cart::count());
+    }
+
+    public function test_product_can_be_removed_from_cart() {
+        $product = Product::factory()->create();
+        $this->post(route('cart.add', $product->id));
+        $response = $this->delete(route('cart.remove', Cart::content()->first()->rowId));
+        $response->assertRedirect(route('cart.index'));
+        $this->assertEquals(0, Cart::count());
+    }
+}
+```
+
+**Run Tests**:
+```bash
+php artisan test
+```
+
+**Step
