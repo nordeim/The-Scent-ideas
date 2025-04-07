@@ -752,4 +752,345 @@ In the next steps, you will continue with:
 3. Checkout page with order processing
 4. Admin panel (product CRUD, order view)
 
-Would you like me to proceed with the **product details page and cart system next**, or jump into the **admin dashboard first**?
+Now proceed with the **product details page and cart system**, then to the **admin dashboard**.  
+
+<think>
+
+Great — we’re now moving into the **core e-commerce functionality**, which transforms the beautifully styled landing site into a fully interactive shopping experience.
+
+Here’s how we’ll proceed:
+
+---
+
+### ✅ Step 1: Build `product.php` – Product Detail Page  
+**Goal:** Show full product details, description, price, and allow customers to add items to their cart.
+
+---
+
+### ✅ Step 2: Create Session-Based Cart System  
+**Goal:** Enable customers to add products to a cart, view cart contents, and update quantities — all stored in PHP sessions.
+
+---
+
+### ✅ Step 3: Checkout Page with Order Processing  
+**Goal:** Allow users to input shipping info and complete order, storing order data in MySQL.
+
+---
+
+### ✅ Step 4: Admin Panel  
+**Goal:** Give admins the ability to manage products (CRUD), view orders, and fulfill them.
+
+Let’s now begin with **Step 1: Product Detail Page**.
+
+</think>
+
+---
+
+## ✅ Step 1: `product.php` – Product Detail Page
+
+### 📁 File: `product.php`
+
+```php
+<?php
+require 'includes/db.php';
+
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+$stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->execute([$id]);
+$product = $stmt->fetch();
+
+if (!$product) {
+    die("Product not found.");
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><?= htmlspecialchars($product['name']) ?> – The Scent</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<section class="product-detail container">
+    <div class="product-wrapper">
+        <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>" class="product-image">
+        <div class="product-info">
+            <h1><?= htmlspecialchars($product['name']) ?></h1>
+            <p class="product-price">$<?= number_format($product['price'], 2) ?></p>
+            <p class="product-description"><?= nl2br(htmlspecialchars($product['description'])) ?></p>
+
+            <form action="cart.php" method="post">
+                <input type="hidden" name="product_id" value="<?= $product['id'] ?>">
+                <label for="qty">Quantity:</label>
+                <input type="number" name="quantity" id="qty" value="1" min="1" style="width: 60px; padding: 5px;">
+                <br><br>
+                <button type="submit" class="btn">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
+```
+
+---
+
+### 📁 Add to: `assets/css/style.css`
+
+```css
+.product-detail {
+    padding: 4rem 0;
+}
+
+.product-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: flex-start;
+}
+
+.product-image {
+    flex: 1 1 40%;
+    max-width: 500px;
+    width: 100%;
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.product-info {
+    flex: 1 1 50%;
+}
+
+.product-price {
+    color: var(--secondary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+.product-description {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+```
+
+✅ Product detail page is complete.
+
+---
+
+## ✅ Step 2: Create the Cart System
+
+We’ll create a **session-based cart** using `cart.php` and `view-cart.php`.
+
+---
+
+### 📁 File: `cart.php` – Add to Cart Handler
+
+```php
+<?php
+session_start();
+require 'includes/db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $product_id = (int) $_POST['product_id'];
+    $quantity = (int) $_POST['quantity'];
+
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+    $stmt->execute([$product_id]);
+    $product = $stmt->fetch();
+
+    if ($product) {
+        $item = [
+            "id" => $product['id'],
+            "name" => $product['name'],
+            "price" => $product['price'],
+            "image" => $product['image'],
+            "quantity" => $quantity
+        ];
+
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
+
+        if (isset($_SESSION['cart'][$product_id])) {
+            $_SESSION['cart'][$product_id]['quantity'] += $quantity;
+        } else {
+            $_SESSION['cart'][$product_id] = $item;
+        }
+    }
+}
+
+header("Location: view-cart.php");
+exit;
+```
+
+---
+
+### 📁 File: `view-cart.php`
+
+```php
+<?php
+session_start();
+$cart = $_SESSION['cart'] ?? [];
+$total = 0;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart – The Scent</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<section class="container">
+    <h2>Your Cart</h2>
+    <?php if (empty($cart)): ?>
+        <p>Your cart is empty.</p>
+    <?php else: ?>
+        <table style="width:100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($cart as $item): 
+                    $subtotal = $item['price'] * $item['quantity'];
+                    $total += $subtotal;
+                ?>
+                    <tr>
+                        <td><?= htmlspecialchars($item['name']) ?></td>
+                        <td><?= $item['quantity'] ?></td>
+                        <td>$<?= number_format($item['price'], 2) ?></td>
+                        <td>$<?= number_format($subtotal, 2) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <h3>Total: $<?= number_format($total, 2) ?></h3>
+        <a href="checkout.php" class="btn">Proceed to Checkout</a>
+    <?php endif; ?>
+</section>
+
+</body>
+</html>
+```
+
+✅ Cart system is complete.
+
+---
+
+## ✅ Step 3: Checkout Page with Order Processing
+
+### 📁 File: `checkout.php`
+
+```php
+<?php
+session_start();
+require 'includes/db.php';
+
+$cart = $_SESSION['cart'] ?? [];
+$total = 0;
+
+foreach ($cart as $item) {
+    $total += $item['price'] * $item['quantity'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+
+    $pdo->beginTransaction();
+
+    $stmt = $pdo->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
+    $stmt->execute([$name, $email]);
+    $user_id = $pdo->lastInsertId();
+
+    $stmt = $pdo->prepare("INSERT INTO orders (user_id, total) VALUES (?, ?)");
+    $stmt->execute([$user_id, $total]);
+    $order_id = $pdo->lastInsertId();
+
+    $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
+
+    foreach ($cart as $item) {
+        $stmt->execute([
+            $order_id,
+            $item['id'],
+            $item['quantity'],
+            $item['price']
+        ]);
+    }
+
+    $pdo->commit();
+    $_SESSION['cart'] = []; // clear cart
+
+    header("Location: thankyou.php");
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout – The Scent</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<section class="container">
+    <h2>Checkout</h2>
+    <form method="post">
+        <label>Name:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
+
+        <button type="submit" class="btn">Place Order</button>
+    </form>
+</section>
+
+</body>
+</html>
+```
+
+✅ Checkout complete.
+
+---
+
+### 📁 File: `thankyou.php`
+
+```php
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Thank You – The Scent</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<section class="container">
+    <h2>Thank you for your order!</h2>
+    <p>Your aromatherapy journey has just begun. 🌿</p>
+    <a href="index.html" class="btn">Back to Home</a>
+</section>
+
+</body>
+</html>
+```
+
+---
+
+## ✅ Step 4: Admin Panel (Basic)
+
+### 📁 File: `admin/dashboard.php`
+
+```php
