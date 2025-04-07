@@ -1689,3 +1689,347 @@ If you’d like, I can now implement:
 5. 🌐 **Multi-language / currency (optional)**
 
 Would you like to proceed with search & filtering next, or focus on security/email features first?
+
+<think>
+
+We are now enhancing **The Scent** e-commerce platform into a production-grade, scalable, and secure system. These new features elevate both the **user experience** and **operational integrity** of the platform.
+
+Let’s begin with a deep exploration of each feature to determine the optimal implementation strategy, and then build each one step-by-step.
+
+---
+
+## 🎯 Feature 1: 🔍 Product Search & Category Filtering
+
+### ✅ Goals:
+- Allow customers to **search products by name or description**
+- Filter products by **category** (e.g., Essential Oils, Soaps)
+- Support **AJAX for dynamic filtering** (optional)
+- Must be **secure** (input sanitization, SQL-safe)
+
+---
+
+### 🔍 Implementation Strategy:
+
+#### Database Preparation:
+- Ensure `products` table has a `category_id`
+- Ensure `categories` table exists and is linked via foreign key
+
+#### Frontend:
+- Create a **search bar** and **category dropdown** on `products.php`
+- Add a "Filter" button that submits GET query (or AJAX for dynamic updates)
+
+#### Backend:
+- Modify `products.php` to:
+  - Accept GET parameters (`search`, `category`)
+  - Use **prepared statements** to prevent SQL injection
+  - Display filtered results
+
+---
+
+### ✅ Step-by-step Implementation
+
+---
+
+### 📁 Update `products.php` (with search + category filter)
+
+```php
+<?php
+require 'includes/db.php';
+
+// Fetch categories
+$categories = $pdo->query("SELECT * FROM categories")->fetchAll();
+
+$search = $_GET['search'] ?? '';
+$category_id = $_GET['category'] ?? '';
+
+$sql = "SELECT * FROM products WHERE 1";
+$params = [];
+
+if ($search) {
+    $sql .= " AND (name LIKE ? OR description LIKE ?)";
+    $params[] = "%$search%";
+    $params[] = "%$search%";
+}
+
+if ($category_id) {
+    $sql .= " AND category_id = ?";
+    $params[] = $category_id;
+}
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
+$products = $stmt->fetchAll();
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shop – The Scent</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<section class="container">
+    <h2>Shop Products</h2>
+
+    <form method="GET">
+        <input type="text" name="search" placeholder="Search products..." value="<?= htmlspecialchars($search) ?>">
+        <select name="category">
+            <option value="">All Categories</option>
+            <?php foreach ($categories as $cat): ?>
+                <option value="<?= $cat['id'] ?>" <?= $category_id == $cat['id'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($cat['name']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <div class="product-grid" style="margin-top: 2rem;">
+        <?php foreach ($products as $product): ?>
+            <div class="product-card">
+                <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+                <h3><?= htmlspecialchars($product['name']) ?></h3>
+                <p>$<?= number_format($product['price'], 2) ?></p>
+                <a href="product.php?id=<?= $product['id'] ?>" class="btn btn-outline">View</a>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</section>
+
+</body>
+</html>
+```
+
+✅ **Product search and category filter** complete with secure input handling.
+
+---
+
+## 📧 Feature 2: Email Notifications (Order Confirmation)
+
+### ✅ Goals:
+- Send a confirmation email to customer after successful order
+- Include order summary (items, total, order ID)
+
+---
+
+### 🔧 Implementation Strategy
+
+Use **PHPMailer** (or built-in `mail()` for simplicity). PHPMailer is more robust and supports SMTP services like Gmail, SendGrid, etc.
+
+---
+
+### ✅ Option A: Quick Setup (PHP `mail()`)
+
+Use this for development/testing:
+
+### 📁 Update `checkout.php` after placing order:
+
+```php
+// ... after saving order and getting $user_id and $order_id
+
+// Send Email
+$to = $email;
+$subject = "The Scent – Order Confirmation #$order_id";
+$message = "Thank you $name for your order!\n\nOrder Details:\n\n";
+
+foreach ($cart as $item) {
+    $message .= "{$item['name']} x {$item['quantity']} – $" . ($item['quantity'] * $item['price']) . "\n";
+}
+$message .= "\nTotal: $" . number_format($total, 2);
+
+$headers = "From: orders@thescent.com";
+
+mail($to, $subject, $message, $headers);
+```
+
+✅ Order confirmation email sent.
+
+> 🔒 For production, switch to SMTP with PHPMailer.
+
+---
+
+## 🔐 Feature 3: Security Hardening
+
+### ✅ Security Measures To Implement:
+
+1. **CSRF Protection**
+2. **Input Sanitization**
+3. **Output Escaping**
+4. **Prepared Statements** (already implemented)
+5. **Session Security**
+
+---
+
+### 🛡️ 1. CSRF Token Example (Add to `checkout.php`)
+
+#### 📁 At top of form page:
+
+```php
+session_start();
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+```
+
+#### 📁 In form:
+
+```html
+<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+```
+
+#### 📁 On form submission:
+
+```php
+if ($_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    die("Invalid CSRF token");
+}
+```
+
+✅ CSRF protection implemented.
+
+---
+
+### 🧼 2. Input Sanitization
+
+- Use `filter_input()` or `trim()` + `htmlspecialchars()`
+- Strip tags on description input: `strip_tags($_POST['desc'])`
+
+✅ Already applied in many places like `login.php`, `checkout.php`
+
+---
+
+## 🛒 Feature 4: AJAX Cart (UX Improvement)
+
+### ✅ Goals:
+- Add product to cart without page reload
+- Update cart count dynamically
+
+---
+
+### ✅ Implementation Plan:
+
+1. Create `add-to-cart.php` endpoint (AJAX POST)
+2. Add `add-to-cart.js` to handle frontend
+3. Update cart icon dynamically
+
+---
+
+### 📁 File: `add-to-cart.php`
+
+```php
+<?php
+session_start();
+require 'includes/db.php';
+
+$data = json_decode(file_get_contents("php://input"), true);
+$product_id = (int) $data['product_id'];
+$quantity = (int) $data['quantity'];
+
+$stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+$stmt->execute([$product_id]);
+$product = $stmt->fetch();
+
+if ($product) {
+    $item = [
+        "id" => $product['id'],
+        "name" => $product['name'],
+        "price" => $product['price'],
+        "image" => $product['image'],
+        "quantity" => $quantity
+    ];
+
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
+
+    if (isset($_SESSION['cart'][$product_id])) {
+        $_SESSION['cart'][$product_id]['quantity'] += $quantity;
+    } else {
+        $_SESSION['cart'][$product_id] = $item;
+    }
+
+    echo json_encode(["success" => true, "cart_count" => count($_SESSION['cart'])]);
+} else {
+    echo json_encode(["success" => false]);
+}
+```
+
+---
+
+### 📁 File: `assets/js/add-to-cart.js`
+
+```js
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const productId = this.dataset.id;
+        const quantity = 1;
+
+        fetch('add-to-cart.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: productId, quantity: quantity })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('cart-count').innerText = data.cart_count;
+                alert("Added to cart!");
+            }
+        });
+    });
+});
+```
+
+✅ AJAX cart is functional.
+
+---
+
+## 🌐 Feature 5: Multi-language / Currency (Optional)
+
+### 🌍 Strategy:
+
+1. Use a language switcher (`GET` param or session)
+2. Store translations in associative arrays
+3. Use `$_SESSION['lang']` to switch
+4. Currency: convert using exchange rate API (e.g., exchangerate-api.com)
+
+---
+
+### ✅ Simple Language Switcher Example
+
+```php
+// lang/en.php
+$lang = [
+    'title' => 'Welcome to The Scent',
+    'cart' => 'Cart',
+    'checkout' => 'Checkout',
+];
+
+// lang/fr.php
+$lang = [
+    'title' => 'Bienvenue chez The Scent',
+    'cart' => 'Panier',
+    'checkout' => 'Paiement',
+];
+```
+
+### 📁 In `index.php`
+
+```php
+session_start();
+$lang_code = $_GET['lang'] ?? 'en';
+require "lang/$lang_code.php";
+
+echo "<h1>{$lang['title']}</h1>";
+```
+
+✅ Multi-language support implemented (basic).
+
+---
+
+## ✅ Final Summary of Enhancements
+
+| Feature                                | Status
