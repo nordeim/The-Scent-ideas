@@ -1018,3 +1018,362 @@ document.querySelector(".newsletter-form").addEventListener("submit", function (
 
 1. **Setup PHP (Laravel)** for dynamic product management.
 2. **Design MySQL Schema** for users,
+
+Let's dive into the **PHP (Laravel) Backend Setup** and **MySQL Schema Design** as planned.
+
+**Phase 2: Laravel Backend Setup**
+----------------------------------
+
+1. **Install Laravel**:
+   - Use Composer to create a new Laravel project: `composer create-project --prefer-dist laravel/laravel the-scent`.
+2. **Configure Database**:
+   - Update `.env` file with MySQL credentials.
+3. **Design Models & Migrations**:
+   - Create tables for `products`, `users`, `orders`, `reviews`.
+4. **Implement CRUD Operations**:
+   - Controllers for managing products, orders, and users.
+5. **Set Up Admin Panel**:
+   - Use Laravel Breeze or Jetstream for authentication.
+   - Admin middleware to restrict access.
+
+**Phase 3: MySQL Schema Design**
+-------------------------------
+
+1. **Tables**:
+   - `users`: `id, name, email, password, role (customer/admin)`
+   - `products`: `id, name, description, price, stock, category`
+   - `orders`: `id, user_id, total_amount, status`
+   - `order_items`: `id, order_id, product_id, quantity`
+   - `reviews`: `id, user_id, product_id, rating, comment`
+
+**Phase 4: E-Commerce Functionality**
+-------------------------------------
+
+1. **Shopping Cart**:
+   - Use Laravel Session or Redis to store cart data.
+2. **Payment Gateway**:
+   - Integrate Stripe or PayPal via Laravel Cashier.
+3. **Order Management**:
+   - Admin can update order status (pending, shipped, delivered).
+
+**Phase 5: Testing & Deployment**
+---------------------------------
+
+1. **Unit & Feature Tests**:
+   - Write tests for CRUD operations and cart functionality.
+2. **Deploy on Apache2**:
+   - Configure virtual host and SSL (Let's Encrypt).
+
+**Step 1: Install Laravel & Configure Database**
+------------------------------------------------
+
+Open your terminal and run:
+```bash
+composer create-project --prefer-dist laravel/laravel the-scent
+cd the-scent
+```
+
+**Update `.env` file**:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=the_scent_db
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+**Create MySQL Database**:
+```sql
+CREATE DATABASE the_scent_db;
+```
+
+**Step 2: Design Models & Migrations**
+--------------------------------------
+
+Run the following commands to create migrations:
+
+```bash
+php artisan make:migration create_products_table
+php artisan make:migration create_orders_table
+php artisan make:migration create_order_items_table
+php artisan make:migration create_reviews_table
+```
+
+**Edit the migration files in `database/migrations`:**
+
+```php
+// create_products_table.php
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateProductsTable extends Migration {
+    public function up() {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->decimal('price', 10, 2);
+            $table->integer('stock');
+            $table->enum('category', ['essential_oil', 'soap']);
+            $table->timestamps();
+        });
+    }
+
+    public function down() {
+        Schema::dropIfExists('products');
+    }
+}
+
+// create_orders_table.php
+class CreateOrdersTable extends Migration {
+    public function up() {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->decimal('total_amount', 10, 2);
+            $table->enum('status', ['pending', 'shipped', 'delivered']);
+            $table->timestamps();
+        });
+    }
+
+    public function down() {
+        Schema::dropIfExists('orders');
+    }
+}
+
+// create_order_items_table.php
+class CreateOrderItemsTable extends Migration {
+    public function up() {
+        Schema::create('order_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity');
+            $table->timestamps();
+        });
+    }
+
+    public function down() {
+        Schema::dropIfExists('order_items');
+    }
+}
+
+// create_reviews_table.php
+class CreateReviewsTable extends Migration {
+    public function up() {
+        Schema::create('reviews', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->integer('rating');
+            $table->text('comment');
+            $table->timestamps();
+        });
+    }
+
+    public function down() {
+        Schema::dropIfExists('reviews');
+    }
+}
+```
+
+**Run Migrations**:
+```bash
+php artisan migrate
+```
+
+**Step 3: Create Models**
+-------------------------
+
+```bash
+php artisan make:model Product
+php artisan make:model Order
+php artisan make:model OrderItem
+php artisan make:model Review
+```
+
+**Edit the models in `app/Models`:**
+
+```php
+// Product.php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Product extends Model {
+    protected $fillable = ['name', 'description', 'price', 'stock', 'category'];
+
+    public function reviews(): HasMany {
+        return $this->hasMany(Review::class);
+    }
+
+    public function orderItems(): HasMany {
+        return $this->hasMany(OrderItem::class);
+    }
+}
+
+// Order.php
+class Order extends Model {
+    protected $fillable = ['user_id', 'total_amount', 'status'];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function orderItems(): HasMany {
+        return $this->hasMany(OrderItem::class);
+    }
+}
+
+// OrderItem.php
+class OrderItem extends Model {
+    protected $fillable = ['order_id', 'product_id', 'quantity'];
+
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function order() {
+        return $this->belongsTo(Order::class);
+    }
+}
+
+// Review.php
+class Review extends Model {
+    protected $fillable = ['user_id', 'product_id', 'rating', 'comment'];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function product() {
+        return $this->belongsTo(Product::class);
+    }
+}
+```
+
+**Step 4: Admin Panel & Authentication**
+-----------------------------------------
+
+Install **Laravel Breeze** for authentication:
+
+```bash
+composer require laravel/breeze --dev
+php artisan breeze:install
+npm install && npm run dev
+php artisan migrate
+```
+
+**Create Admin Middleware**:
+```bash
+php artisan make:middleware AdminMiddleware
+```
+
+**Edit `app/Http/Middleware/AdminMiddleware.php`:**
+
+```php
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class AdminMiddleware {
+    public function handle(Request $request, Closure $next) {
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return $next($request);
+        }
+        return redirect('/')->with('error', 'Access denied!');
+    }
+}
+```
+
+**Register Middleware in `kernel.php`:**
+
+```php
+protected $routeMiddleware = [
+    // ...
+    'admin' => \App\Http\Middleware\AdminMiddleware::class,
+];
+```
+
+**Protect Admin Routes in `web.php`:**
+
+```php
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
+});
+```
+
+**Step 5: CRUD Operations for Products**
+-----------------------------------------
+
+```bash
+php artisan make:controller ProductController --resource
+```
+
+**Edit `app/Http/Controllers/ProductController.php`:**
+
+```php
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use Illuminate\Http\Request;
+
+class ProductController extends Controller {
+    public function index() {
+        $products = Product::all();
+        return view('products.index', compact('products'));
+    }
+
+    public function create() {
+        return view('products.create');
+    }
+
+    public function store(Request $request) {
+        Product::create($request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category' => 'required|in:essential_oil,soap',
+        ]));
+        return redirect()->route('products.index')->with('success', 'Product added!');
+    }
+
+    public function edit(Product $product) {
+        return view('products.edit', compact('product'));
+    }
+
+    public function update(Request $request, Product $product) {
+        $product->update($request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'category' => 'required|in:essential_oil,soap',
+        ]));
+        return redirect()->route('products.index')->with('success', 'Product updated!');
+    }
+
+    public function destroy(Product $product) {
+        $product->delete();
+        return redirect()->route('products.index')->with('success', 'Product deleted!');
+    }
+}
+```
+
+**Define Routes in `web.php`:**
+
+```php
+Route::resource('products', ProductController::class)->middleware('admin');
+```
+
+**Step 6: Shopping Cart & Payment Gateway**
+--------------------------------------------
+
+Install
