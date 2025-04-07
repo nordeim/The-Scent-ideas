@@ -471,4 +471,285 @@ body {
 }
 
 .parallax-3 {
-  background-image: url('https://raw.githubusercontent.com/nordeim/The-Scent/main/images/
+  background-image: url('https://raw.githubusercontent.com/nordeim/The-Scent/main/images/soap5.jpg');
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+}
+
+.overlay h2 {
+  font-family: var(--heading-font);
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.overlay p {
+  font-size: 1.2rem;
+  font-weight: 300;
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: 2rem;
+}
+
+.product-card {
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.product-card h3 {
+  margin: 1rem 0 0.5rem;
+  font-family: var(--heading-font);
+  font-size: 1.3rem;
+}
+
+.product-card p {
+  font-weight: 500;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+/* Call to Action */
+.cta {
+  background: var(--primary);
+  color: white;
+  padding: 4rem 2rem;
+}
+
+.cta h2 {
+  font-family: var(--heading-font);
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Footer */
+.footer {
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid #ccc;
+}
+
+.footer .socials a {
+  color: var(--primary);
+  margin: 0 0.5rem;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.footer .socials a:hover {
+  color: var(--dark);
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .parallax {
+    background-attachment: scroll;
+  }
+}
+```
+
+✅ The homepage is now **fully styled and responsive**.
+
+---
+
+## ✅ 2. DATABASE SCHEMA (MySQL)
+
+<think>
+We'll now design a flexible schema to store products, categories, users, orders, and more. This schema will support:
+
+- Product listings with images and prices
+- Shopping cart and checkout
+- Admin dashboard management
+</think>
+
+### 📁 File: `schema.sql`
+
+```sql
+CREATE DATABASE the_scent;
+USE the_scent;
+
+-- Products
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    image VARCHAR(255),
+    category_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Categories
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE
+);
+
+-- Users (Customers)
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Orders
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    total DECIMAL(10,2),
+    status VARCHAR(50) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Order Items
+CREATE TABLE order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    price DECIMAL(10,2),
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+-- Admin Users
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+```
+
+✅ Schema created. It supports basic e-commerce functionality.
+
+---
+
+## ✅ 3. PRODUCT LISTING PAGE (PHP + MySQL)
+
+<think>
+Now, we’ll create a PHP page (`products.php`) that fetches product data from the database and displays it using the styled cards we defined in HTML/CSS.
+
+We'll assume that we have a connection file (`db.php`) that handles database connection securely using PDO.
+</think>
+
+---
+
+### 📁 File: `includes/db.php`
+
+```php
+<?php
+$host = 'localhost';
+$db   = 'the_scent';
+$user = 'root';
+$pass = '';
+$charset = 'utf8mb4';
+
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+];
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=$charset", $user, $pass, $options);
+} catch (\PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+?>
+```
+
+---
+
+### 📁 File: `products.php`
+
+```php
+<?php
+require 'includes/db.php';
+
+$stmt = $pdo->query("SELECT * FROM products LIMIT 9");
+$products = $stmt->fetchAll();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products – The Scent</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <section class="products container">
+    <h2>Our Aromatherapy Collection</h2>
+    <div class="product-grid">
+      <?php foreach ($products as $product): ?>
+        <div class="product-card">
+          <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+          <h3><?= htmlspecialchars($product['name']) ?></h3>
+          <p>$<?= number_format($product['price'], 2) ?></p>
+          <a href="product.php?id=<?= $product['id'] ?>" class="btn btn-outline">View</a>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </section>
+
+</body>
+</html>
+```
+
+---
+
+## ✅ Summary of Completed Work
+
+| Component              | Status     |
+|------------------------|------------|
+| Immersive Homepage     | ✅ Complete |
+| CSS Styling            | ✅ Complete |
+| Parallax & AOS Effects | ✅ Complete |
+| Product Grid           | ✅ Complete |
+| MySQL Schema           | ✅ Complete |
+| PHP Product Page       | ✅ Complete |
+
+---
+
+## 🔜 Next Steps
+
+In the next steps, you will continue with:
+
+1. Build the `product.php` detail page
+2. Create the cart system (add to cart, session-based)
+3. Checkout page with order processing
+4. Admin panel (product CRUD, order view)
+
+Would you like me to proceed with the **product details page and cart system next**, or jump into the **admin dashboard first**?
