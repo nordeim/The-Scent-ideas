@@ -1,0 +1,927 @@
+Okay, based on the refined Technical Design Specification Document (Version 2.0) and incorporating the visual elements and "Wow Effect" discussed, here is the rendered HTML source code for the static landing page (`http://the-scent.com`).
+
+This HTML includes inline CSS and JavaScript for easy previewing in a browser. It uses placeholder content and simulates the look and feel described in the design, including animations (AOS) and interactive elements (Typed.js).
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Scent – Premium Aromatherapy & Natural Soaps</title>
+    <meta name="description" content="Discover premium aromatherapy products: essential oils and natural soaps crafted with globally sourced ingredients to promote mental and physical wellness. Experience The Scent.">
+
+    <!-- OpenGraph Meta Tags -->
+    <meta property="og:title" content="The Scent – Natural Aromatherapy Solutions for Mind & Body">
+    <meta property="og:description" content="High-quality essential oils and custom natural soaps for holistic well-being. Globally sourced, uniquely formulated by The Scent.">
+    <!-- Using one of the product images as placeholder OG image -->
+    <meta property="og:image" content="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent6.jpg">
+    <meta property="og:url" content="http://the-scent.com"> <!-- Placeholder URL -->
+    <meta property="og:type" content="website">
+
+    <!-- Favicon Placeholder (replace with actual favicon links) -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS (Embedded for Preview) -->
+    <style>
+        :root {
+            --primary-color: #3a5a40;   /* Deep Green */
+            --secondary-color: #588157; /* Medium Green */
+            --accent-color: #a3b18a;    /* Light Green/Beige */
+            --light-bg: #f8f6f4;       /* Off-white/Light Beige */
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --text-light: #5f5f5f;
+            --light-text: #f8f6f4;
+            --footer-bg: #344e41;      /* Darker Green */
+            --font-heading: 'Lora', serif;
+            --font-body: 'Open Sans', sans-serif;
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        /* --- Base & Typography --- */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px; /* Base font size */
+        }
+        body {
+            font-family: var(--font-body);
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            line-height: 1.7;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+            line-height: 1.3;
+            margin-bottom: 0.75em;
+        }
+        h1 { font-size: 2.8rem; font-weight: 700; }
+        h2 { font-size: 2.2rem; font-weight: 600; text-align: center; margin-bottom: 1.5em;}
+        h3 { font-size: 1.5rem; font-weight: 600; }
+        p { margin-bottom: 1em; color: var(--text-light); }
+        a { color: var(--secondary-color); text-decoration: none; transition: color 0.3s ease; }
+        a:hover { color: var(--primary-color); }
+        img { max-width: 100%; height: auto; display: block; }
+        ul { list-style: none; }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        section {
+            padding: 80px 0;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px; /* Pill shape */
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+            border-color: var(--secondary-color);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--secondary-color);
+            color: var(--light-text);
+        }
+
+        /* --- Header --- */
+        header.main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(248, 246, 244, 0.95); /* Slightly transparent light bg */
+            box-shadow: var(--shadow-light);
+            padding: 15px 0;
+            transition: background-color 0.3s ease, padding 0.3s ease;
+        }
+        header.scrolled { /* Style when page is scrolled */
+             background-color: rgba(248, 246, 244, 1);
+             padding: 10px 0;
+        }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1300px; /* Slightly wider for header */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .logo img {
+            height: 45px; /* Adjust as needed */
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover {
+             transform: scale(1.05);
+        }
+        nav.main-nav ul {
+            display: flex;
+            gap: 35px;
+        }
+        nav.main-nav ul li a {
+            color: var(--primary-color);
+            font-weight: 600;
+            padding-bottom: 5px;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        nav.main-nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+        nav.main-nav ul li a:hover::after,
+        nav.main-nav ul li a.active::after {
+            width: 100%;
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-icons a {
+             font-size: 1.2rem;
+             color: var(--primary-color);
+        }
+        .mobile-menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; color: var(--primary-color); }
+
+        /* --- Hero Section --- */
+        #hero {
+            height: 100vh;
+            min-height: 650px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--light-text);
+            position: relative;
+            overflow: hidden;
+            padding: 0; /* Remove default section padding */
+            background: url('https://images.unsplash.com/photo-1499649039015-7f7anis7y?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover; /* High-quality fallback background */
+        }
+        #hero::before { /* Dark overlay for text contrast */
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(40, 50, 40, 0.5); /* Dark green overlay */
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 20px;
+        }
+        .hero-content h1 {
+            font-size: 3.5rem; /* Slightly adjusted */
+            color: var(--light-text);
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        .hero-tagline {
+            font-size: 1.3rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: #e0e0e0;
+            min-height: 2em; /* Space for typed text */
+        }
+        /* Style for the Typed.js cursor */
+        .typed-cursor {
+            opacity: 1;
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* --- Featured Products Section --- */
+        #featured-products {
+             background-color: var(--light-bg);
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-medium);
+        }
+        .product-image {
+            height: 280px; /* Fixed height for consistency */
+            overflow: hidden;
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the area */
+            transition: transform 0.4s ease;
+        }
+        .product-card:hover .product-image img {
+             transform: scale(1.05);
+        }
+        .product-info {
+            padding: 25px;
+            text-align: center; /* Center align info */
+            flex-grow: 1; /* Allow info to take remaining space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Push actions to bottom */
+        }
+        .product-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        .product-category {
+             font-size: 0.8rem;
+             color: var(--accent-color);
+             text-transform: uppercase;
+             letter-spacing: 1px;
+             margin-bottom: 10px;
+             display: block;
+        }
+        .product-description {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            flex-grow: 1; /* Allow description to grow */
+        }
+        .product-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .product-actions button {
+             margin: 5px;
+             font-size: 0.85rem;
+             padding: 8px 20px;
+        }
+        .product-rating {
+            color: #f39c12; /* Gold color for stars */
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        /* --- Our Story Section --- */
+        #our-story {
+            background: url('https://images.unsplash.com/photo-1540541346-85a724739a84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed; /* Fixed background for parallax effect */
+            background-size: cover;
+            color: var(--light-text);
+            position: relative;
+            text-align: center;
+        }
+        #our-story::before { /* Dark overlay */
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(58, 90, 64, 0.85); /* Primary color overlay */
+            z-index: 1;
+        }
+        .story-content {
+            position: relative;
+            z-index: 2;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        .story-content h2 {
+            color: var(--light-text);
+        }
+        .story-content p {
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        /* --- Footer --- */
+        footer.main-footer {
+            background-color: var(--footer-bg);
+            color: var(--light-text);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer-logo img {
+             height: 50px;
+             margin-bottom: 20px;
+             filter: brightness(0) invert(1); /* Make logo white */
+        }
+        .footer-nav ul {
+             display: flex;
+             gap: 25px;
+             margin-bottom: 30px;
+             flex-wrap: wrap; /* Allow wrapping on smaller screens */
+             justify-content: center;
+        }
+        .footer-nav ul li a {
+             color: var(--accent-color);
+             font-size: 0.9rem;
+        }
+        .footer-nav ul li a:hover {
+             color: var(--light-text);
+        }
+        .social-icons {
+            margin-bottom: 30px;
+        }
+        .social-icons a {
+            color: var(--light-text);
+            font-size: 1.5rem;
+            margin: 0 12px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        .copyright {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-top: 20px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 992px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .hero-content h1 { font-size: 3rem; }
+            .product-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        }
+
+        @media (max-width: 768px) {
+            section { padding: 60px 0; }
+            .container { padding: 0 15px; }
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.8rem; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-tagline { font-size: 1.1rem; }
+
+            nav.main-nav ul { display: none; /* Hide for mobile toggle */ }
+            .mobile-menu-toggle { display: block; } /* Show hamburger */
+            .nav-icons { gap: 15px; } /* Reduce gap */
+            .nav-icons a { font-size: 1.1rem; }
+
+            /* Mobile Nav Styles (placeholder for JS toggle) */
+            /* nav.main-nav.mobile-active ul { ... display: flex; flex-direction: column; ... } */
+
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 20px; } /* 2 columns on tablet */
+            .product-image { height: 220px; }
+
+             .footer-nav ul { gap: 15px; }
+        }
+
+        @media (max-width: 576px) {
+             .hero-content h1 { font-size: 2rem; }
+             .hero-tagline { font-size: 1rem; }
+             .btn { padding: 10px 25px; font-size: 0.9rem; }
+
+             .product-grid { grid-template-columns: 1fr; } /* 1 column on mobile */
+             .product-image { height: 250px; }
+             .story-content p { font-size: 1rem; }
+        }
+
+        /* --- Quick View Modal Placeholder Styles --- */
+        .quick-view-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1050;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content-wrapper {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            color: var(--text-light);
+            cursor: pointer;
+            border: none;
+            background: none;
+            line-height: 1;
+        }
+        .modal-close-btn:hover { color: var(--primary-color); }
+        .modal-content-area img {
+             width: 100%;
+             max-height: 300px;
+             object-fit: contain; /* Contain to see whole product */
+             margin-bottom: 20px;
+             border-radius: var(--border-radius);
+        }
+         .modal-content-area h3 { margin-bottom: 15px; }
+         .modal-content-area .product-price { font-size: 1.4rem; margin-bottom: 15px;}
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header" id="main-header">
+        <div class="header-container">
+            <a href="#hero" class="logo">
+                <!-- Placeholder Logo - Replace with actual SVG or Image -->
+                 <svg height="45" viewBox="0 0 100 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 40 C20 10, 30 10, 40 25 S60 40, 70 30 C 80 20, 90 20, 95 40" stroke="#3a5a40" stroke-width="4" fill="transparent"/>
+                    <text x="5" y="20" font-family="Lora, serif" font-size="18" fill="#3a5a40" font-style="italic">The Scent</text>
+                </svg>
+                <!-- <img src="/images/logo.png" alt="The Scent Logo"> -->
+            </a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#hero" class="active">Home</a></li>
+                    <li><a href="#featured-products">Products</a></li>
+                    <li><a href="#our-story">Our Story</a></li>
+                    <!-- Add links like Blog, Contact later -->
+                </ul>
+            </nav>
+            <div class="nav-icons">
+                 <!-- Search Icon (Functionality later) -->
+                <a href="#" aria-label="Search"><i class="fas fa-search"></i></a>
+                 <!-- User Account Icon (Login/Profile functionality later) -->
+                <a href="#" aria-label="My Account"><i class="far fa-user"></i></a>
+                 <!-- Cart Icon (Functionality later) -->
+                <a href="#" aria-label="Shopping Cart"><i class="fas fa-shopping-bag"></i> <span class="cart-count">(0)</span></a>
+            </div>
+            <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero">
+            <div class="hero-content" data-aos="fade-up">
+                <h1>Harmonize Your Mind & Body</h1>
+                <p class="hero-tagline">
+                    Experience the essence of wellness with <span id="typed-tagline"></span>
+                </p>
+                <a href="#featured-products" class="btn btn-primary">Explore Collections</a>
+            </div>
+        </section>
+
+        <!-- Featured Products Section -->
+        <section id="featured-products" class="container">
+            <h2>Featured Aromatherapy</h2>
+            <div class="product-grid">
+                <!-- Product Card 1: Essential Oil -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="product-image">
+                        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent2.jpg" alt="Lavender Essential Oil">
+                    </div>
+                    <div class="product-info">
+                         <span class="product-category">Essential Oil</span>
+                        <h3>Lavender Bliss Oil</h3>
+                        <p class="product-description">Calming French lavender to promote relaxation and restful sleep.</p>
+                        <div class="product-rating">★★★★☆</div>
+                        <div class="product-price">$18.00</div>
+                        <div class="product-actions">
+                            <button class="btn btn-secondary quick-view-btn" data-product-id="1">Quick View</button>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="1">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2: Soap -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="product-image">
+                        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/soap2.jpg" alt="Natural Soap Bar">
+                    </div>
+                    <div class="product-info">
+                         <span class="product-category">Natural Soap</span>
+                        <h3>Oatmeal & Honey Soap</h3>
+                        <p class="product-description">Soothing natural soap with colloidal oatmeal and raw honey for sensitive skin.</p>
+                         <div class="product-rating">★★★★★</div>
+                        <div class="product-price">$9.50</div>
+                         <div class="product-actions">
+                            <button class="btn btn-secondary quick-view-btn" data-product-id="2">Quick View</button>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="2">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3: Essential Oil -->
+                 <div class="product-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="product-image">
+                        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent5.jpg" alt="Eucalyptus Essential Oil">
+                    </div>
+                    <div class="product-info">
+                         <span class="product-category">Essential Oil</span>
+                        <h3>Eucalyptus Radiata Oil</h3>
+                        <p class="product-description">Invigorating Australian eucalyptus oil to clear airways and refresh the senses.</p>
+                        <div class="product-rating">★★★★☆</div>
+                        <div class="product-price">$15.00</div>
+                         <div class="product-actions">
+                            <button class="btn btn-secondary quick-view-btn" data-product-id="3">Quick View</button>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="3">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4: Soap -->
+                <div class="product-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="product-image">
+                        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/soap6.jpg" alt="Charcoal Natural Soap">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-category">Natural Soap</span>
+                        <h3>Charcoal Detox Soap</h3>
+                        <p class="product-description">Activated charcoal and tea tree oil blend for a deep, purifying cleanse.</p>
+                        <div class="product-rating">★★★★★</div>
+                        <div class="product-price">$10.00</div>
+                         <div class="product-actions">
+                            <button class="btn btn-secondary quick-view-btn" data-product-id="4">Quick View</button>
+                            <button class="btn btn-primary add-to-cart-btn" data-product-id="4">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div style="text-align: center; margin-top: 40px;">
+                 <a href="/products" class="btn btn-secondary">View All Products</a> <!-- Link to full catalog page -->
+             </div>
+        </section>
+
+        <!-- Our Story Section -->
+        <section id="our-story">
+            <div class="story-content" data-aos="fade-right">
+                <h2>Crafted with Nature, Backed by Science</h2>
+                <p>
+                    At The Scent, we are passionate about promoting mental and physical well-being through the power of aromatherapy.
+                    We import the highest quality raw materials from around the globe, using our unique formulations and knowledge
+                    to create harmonious, balanced essential oils and natural soaps. In today's stressful world, we believe
+                    aromatherapy is more relevant than ever.
+                </p>
+                <a href="/about" class="btn btn-primary">Learn Our Story</a> <!-- Link to About page -->
+            </div>
+        </section>
+
+        <!-- Add Testimonial or other sections here if desired -->
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                 <!-- Placeholder Logo - Replace -->
+                 <svg height="50" viewBox="0 0 100 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 40 C20 10, 30 10, 40 25 S60 40, 70 30 C 80 20, 90 20, 95 40" stroke="#f8f6f4" stroke-width="4" fill="transparent"/>
+                    <text x="5" y="20" font-family="Lora, serif" font-size="18" fill="#f8f6f4" font-style="italic">The Scent</text>
+                </svg>
+            </div>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </nav>
+            <div class="social-icons">
+                <a href="#" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Pinterest" target="_blank" rel="noopener noreferrer"><i class="fab fa-pinterest-p"></i></a>
+                <a href="#" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p class="copyright">&copy; <span id="current-year"></span> The Scent. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+     <!-- Quick View Modal Structure (Hidden) -->
+     <div id="quick-view-modal" class="quick-view-modal">
+         <div class="modal-content-wrapper" data-aos="zoom-in">
+              <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+              <div class="modal-content-area">
+                   <!-- Content will be loaded via JavaScript -->
+                   <p>Loading product details...</p>
+              </div>
+         </div>
+     </div>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+
+    <!-- Custom JS (Embedded for Preview) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- Initialize AOS ---
+            AOS.init({
+                duration: 800, // Animation duration
+                once: true,   // Only animate once
+                offset: 50,   // Trigger animation slightly before element enters viewport
+            });
+
+            // --- Initialize Typed.js ---
+            const typedElement = document.getElementById('typed-tagline');
+            if (typedElement) {
+                new Typed('#typed-tagline', {
+                    strings: [
+                        'pure essential oils.',
+                        'natural handcrafted soaps.',
+                        'holistic wellness.',
+                        'globally sourced ingredients.'
+                    ],
+                    typeSpeed: 50,
+                    backSpeed: 30,
+                    backDelay: 1500,
+                    loop: true,
+                    smartBackspace: true
+                });
+            }
+
+            // --- Header Scroll Effect ---
+            const header = document.getElementById('main-header');
+            if(header) {
+                 window.addEventListener('scroll', () => {
+                     if (window.scrollY > 50) {
+                         header.classList.add('scrolled');
+                     } else {
+                         header.classList.remove('scrolled');
+                     }
+                 });
+            }
+
+            // --- Update Copyright Year ---
+            const yearSpan = document.getElementById('current-year');
+            if(yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+
+            // --- Smooth Scrolling for Nav Links ---
+            document.querySelectorAll('header nav a[href^="#"], footer nav a[href^="#"], a.btn[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    // Only prevent default if it's a real hash link on the current page
+                    if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+                         const targetElement = document.querySelector(targetId);
+                         if (targetElement) {
+                              e.preventDefault();
+                              targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                         }
+                    }
+                });
+            });
+
+
+            // --- Quick View Modal Placeholder Logic ---
+            const modal = document.getElementById('quick-view-modal');
+            const closeBtn = modal.querySelector('.modal-close-btn');
+            const modalContentArea = modal.querySelector('.modal-content-area');
+
+            document.querySelectorAll('.quick-view-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const productId = event.target.dataset.productId;
+                    console.log("Quick View requested for product ID:", productId);
+
+                    // --- Placeholder Content Loading ---
+                    // In a real app, this would be an AJAX call based on productId
+                    modalContentArea.innerHTML = `
+                        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent${productId <= 2 ? '2' : '5'}.jpg" alt="Placeholder Product ${productId}">
+                        <h3>Placeholder Product ${productId} Name</h3>
+                        <p class="product-price">$${productId * 5 + 10}.00</p>
+                        <p>This is a brief placeholder description for the product. More details would be loaded here via AJAX in the full application.</p>
+                        <button class="btn btn-primary add-to-cart-modal" data-product-id="${productId}">Add to Cart</button>
+                    `;
+                    // --- End Placeholder ---
+
+                    modal.style.display = 'flex';
+                    // Trigger AOS animation for the modal content if needed
+                    AOS.refreshHard(); // Re-check AOS elements if content changes dynamically
+                });
+            });
+
+            // Close modal functionality
+             if(closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                });
+            }
+            // Close modal on outside click
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) { // Check if click was on the backdrop
+                    modal.style.display = 'none';
+                }
+            });
+
+             // --- Add to Cart Placeholder Logic ---
+             // Use event delegation for buttons added dynamically (like in modal)
+             document.body.addEventListener('click', function(event) {
+                 if (event.target.matches('.add-to-cart-btn') || event.target.matches('.add-to-cart-modal')) {
+                     const productId = event.target.dataset.productId;
+                     console.log("Add to Cart requested for product ID:", productId);
+                     alert(`(Placeholder) Added product ${productId} to cart! Backend integration needed.`);
+                     // Update cart count indicator (placeholder)
+                     const cartCount = document.querySelector('.cart-count');
+                     if (cartCount) {
+                         let currentCount = parseInt(cartCount.textContent.replace(/\(|\)/g, '')) || 0;
+                         cartCount.textContent = `(${currentCount + 1})`;
+                     }
+                 }
+             });
+
+             // --- Mobile Menu Toggle Placeholder ---
+             const mobileToggle = document.querySelector('.mobile-menu-toggle');
+             // const mainNav = document.querySelector('.main-nav'); // Add logic later if needed
+             if(mobileToggle) {
+                 mobileToggle.addEventListener('click', () => {
+                      console.log("Mobile menu toggle clicked (functionality to be added)");
+                      alert("Mobile Menu Toggle (Requires JS logic to show/hide nav)");
+                      // Example: mainNav.classList.toggle('mobile-active');
+                 });
+             }
+
+        });
+    </script>
+
+</body>
+</html>
+```
+
+**How to Preview:**
+
+1.  Save the code above as an HTML file (e.g., `the_scent_preview.html`).
+2.  Open the file directly in your web browser (Chrome, Firefox, Edge, Safari).
+
+**What you'll see:**
+
+*   A full-height hero section with a background image, the main headline, and a tagline animated by Typed.js.
+*   A section showcasing four featured products (2 essential oils, 2 soaps) using the provided images in responsive cards with hover effects and placeholder buttons.
+*   An "Our Story" section with a fixed background image (simulating parallax) and text reflecting the brand mission.
+*   A styled header that becomes slightly smaller/opaque on scroll.
+*   A styled footer with social icons and copyright.
+*   Subtle fade/slide-in animations on elements as you scroll down (via AOS).
+*   Placeholder "Quick View" buttons that open a modal with *placeholder* content.
+*   Placeholder "Add to Cart" buttons that trigger an alert and increment a *dummy* cart count.
+*   A hamburger icon for mobile view context (though the actual menu toggle requires more JS).
+
+This static preview accurately reflects the visual design and front-end elements specified in the TDS, giving you a clear idea of the website's appearance before backend development.  
+
+---
+Here's a thinking process for generating the HTML landing page based on the Technical Design Specification (TDS) and previous discussions:
+
+1.  **Understand the Goal:** The user wants a static HTML representation of the *landing page* (homepage) for "The Scent" e-commerce site, as designed in the TDS. This is for preview purposes, showing the look and feel *before* full backend integration. It should incorporate the "Wow Effect" elements discussed and the branding described.
+
+2.  **Identify Key Sections (from TDS & Sample):**
+    *   Header (Logo, Navigation)
+    *   Hero Section (Engaging visual, tagline, CTA)
+    *   Featured Products Section (Grid, Product Cards with essential oil/soap examples)
+    *   Our Story / Brand Message Section (Reflecting company mission)
+    *   Testimonials / Social Proof (Optional but good)
+    *   Newsletter Signup (Optional but common)
+    *   Footer (Copyright, Social Links, Nav Links)
+
+3.  **Recall Design Elements & "Wow Effect":**
+    *   **Color Palette:** Primary (`#3a5a40`), Secondary (`#588157`), Accent (`#a3b18a`), Light BG (`#f8f6f4`), Card BG (`#ffffff`), Text (`#333333`), Light Text (`#f8f6f4`), Footer (`#344e41`).
+    *   **Fonts:** Heading (`Lora`), Body (`Open Sans`).
+    *   **Animations:** AOS library for subtle scroll effects. Hover effects on cards and buttons.
+    *   **Interactivity (Simulated):** Typed.js effect in the hero section. Quick View button (though modal functionality won't work in static HTML without JS).
+    *   **Visuals:** High-quality product images provided. Hero section needs a background reflecting nature/calmness.
+    *   **Branding:** Emphasize wellness, natural ingredients, quality, global sourcing.
+
+4.  **Structure the HTML (`index.html`):**
+    *   Standard HTML5 boilerplate (`<!DOCTYPE html>`, `<html>`, `<head>`, `<body>`).
+    *   **`<head>`:**
+        *   `charset`, `viewport`.
+        *   `title`: "The Scent – Premium Aromatherapy & Natural Soaps" (or similar).
+        *   `description`: Reflecting the company mission.
+        *   OpenGraph meta tags (using provided logo/image examples).
+        *   Links to Google Fonts (`Lora`, `Open Sans`).
+        *   Link to Font Awesome (for icons).
+        *   Link to AOS CSS.
+        *   Internal `<style>` block for CSS (for self-contained preview) or link to external `style.css`. *Decision: Use internal `<style>` for easy preview.*
+    *   **`<body>`:**
+        *   `<header>`: Logo (`img`), Navigation (`nav > ul > li > a`). Include placeholder hamburger for mobile view context.
+        *   `<main>` element to wrap content.
+        *   `<section id="hero">`: Background image/color, content container (`div.hero-content`), `h1`, tagline `span` for Typed.js, CTA button (`a.btn`). Add `data-aos` attributes.
+        *   `<section id="featured-products">`: Container (`div.container`), heading (`h2`), product grid (`div.product-grid`).
+            *   Product Cards (`div.product-card`): `img`, `div.product-info` ( `h3` name, `p` short description, `span.price`, `div.rating` placeholder, `button.btn.quick-view` placeholder). Populate with provided product image URLs and realistic names/prices. Use `data-aos` attributes.
+        *   `<section id="our-story">`: Background reflecting nature (maybe parallax *effect* simulated with `background-attachment: fixed`), overlay, content container (`div.story-content`), `h2`, `p` explaining the brand mission. Add `data-aos` attributes.
+        *   `<section id="testimonials">` (Optional/Simplified): Simple quote block.
+        *   `<section id="newsletter">` (Optional/Simplified): Basic form.
+        *   `<footer>`: Container (`div.container`), social icons (`div.social-icons > a > i`), simple nav links, copyright.
+    *   JavaScript includes at the *end* of `<body>`:
+        *   AOS JS library.
+        *   Typed.js library.
+        *   Inline `<script>` block for initializing AOS, Typed.js, and placeholder functions for any interactive elements (like modal toggles, though they won't fully work).
+
+5.  **Write the CSS (within `<style>`):**
+    *   Define `:root` variables (colors, fonts).
+    *   Basic reset (`*`, `html`, `body`).
+    *   Global styles (typography, buttons, containers).
+    *   Header styles (flex layout, sticky positioning, nav links, hover effects, mobile hamburger placeholder).
+    *   Hero section styles (full height, background, centering, text styling, button styling, Typed.js cursor styling).
+    *   Featured Products styles (padding, grid layout, card styling, image styling, info padding, price/rating styles, hover effects).
+    *   Our Story styles (padding, background image/overlay, text styling, fixed attachment for pseudo-parallax).
+    *   Testimonials/Newsletter styles (if included).
+    *   Footer styles (background, padding, centering, social icon styling).
+    *   AOS integration (base styles are linked, maybe add minor custom adjustments).
+    *   Responsive styles (`@media` queries) for navigation toggle, grid adjustments, font sizes.
+
+6.  **Write the JavaScript (within `<script>`):**
+    *   Initialize AOS: `AOS.init({...});`
+    *   Initialize Typed.js: `new Typed('#typed', {...});` targeting the hero tagline span.
+    *   Add placeholder comments for interactivity that *can't* be fully implemented in static HTML (e.g., "Modal logic would go here", "AJAX cart add would go here"). Include basic smooth scroll if nav links point to sections.
+
+7.  **Populate Content:**
+    *   Use the company mission text for the "Our Story" section.
+    *   Use the provided image URLs for product cards. Create realistic product names (e.g., "Lavender Bliss Essential Oil", "Oatmeal & Honey Natural Soap") and prices.
+    *   Add placeholder ratings (e.g., using stars ★★★★☆).
+    *   Write compelling hero text and taglines for Typed.js.
+
+8.  **Review and Refine:**
+    *   Check HTML structure and semantics.
+    *   Verify CSS styles render correctly according to the design. Check colors, fonts, layout.
+    *   Ensure responsiveness works at common breakpoints.
+    *   Make sure animations (AOS) are subtle and not distracting.
+    *   Proofread text content.
+    *   Ensure all links (even placeholders like `#`) are present.
+
+9.  **Self-Correction Example during process:** Initially, I might forget the responsive hamburger menu. During review, I'd realize the navigation won't work on small screens and add the necessary HTML structure (hamburger icon) and CSS (`@media` query to hide `ul` and show hamburger, plus a potential `.show` class for JS toggle simulation). I also need to remember to add placeholder product images and names based on the user's list. The design docs mentioned Redis/Stripe/Login, but these are *backend* features, so they won't be functional in this static HTML preview – make sure not to imply they are working. Just show the UI elements.
