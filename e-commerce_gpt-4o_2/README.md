@@ -1417,4 +1417,275 @@ You could further extend this system with:
 
 - Stripe/PayPal payment integration
 - Customer login + order history
-- Product
+- Product search, filtering, and categories
+
+We’ve already built the core of the e-commerce system for **The Scent**, and now we’re moving into **Phase 2: Feature Extensions**, which will bring the platform to production-grade standards.
+
+Here’s the updated roadmap for extended functionality:
+
+---
+
+## 🔄 Phase 2: System Extension Roadmap
+
+### ✅ Already Completed (Phase 1)
+- Static immersive homepage
+- Dynamic product catalog (MySQL + PHP)
+- Product detail + Add to cart
+- Session-based cart
+- Checkout with order saving
+- Admin dashboard (products + orders)
+
+---
+
+## 🚀 Now Implementing (Phase 2)
+
+1. ✅ **Stripe/PayPal payment integration**
+2. ✅ **Customer login, registration, and session management**
+3. ✅ **Customer order history (My Orders)**
+4. 🔜 **Product search, filtering, and categories**
+5. 🔜 **Email notifications (order confirmation)**
+6. 🔜 **Security & validation (input sanitization, CSRF, SQL injection defense)**
+
+Let’s proceed step-by-step and implement the next features:
+
+---
+
+# ✅ 1. Stripe/PayPal Payment Integration
+
+We’ll implement **Stripe Checkout** (easier, faster, secure, and supports card payments). PayPal could be added later via toggle.
+
+---
+
+## 📦 Stripe Setup
+
+### 🧾 Requirements:
+- Stripe account
+- Stripe test API key
+- Stripe PHP SDK
+
+### 🧱 Tech Stack:
+- PHP backend
+- Stripe Checkout Session API
+
+---
+
+## ⚙️ Install Stripe SDK via Composer (if using Composer)
+
+```bash
+composer require stripe/stripe-php
+```
+
+If not using Composer, include via CDN:
+```php
+require 'vendor/stripe/stripe-php/init.php';
+```
+
+---
+
+### 📁 Create File: `pay.php` – Stripe Checkout Session
+
+```php
+<?php
+require 'vendor/autoload.php';
+session_start();
+require 'includes/db.php';
+
+\Stripe\Stripe::setApiKey('sk_test_YOUR_SECRET_KEY'); // Replace with your Stripe Secret Key
+
+$cart = $_SESSION['cart'] ?? [];
+
+$line_items = [];
+
+foreach ($cart as $item) {
+    $line_items[] = [
+        'price_data' => [
+            'currency' => 'usd',
+            'product_data' => [
+                'name' => $item['name'],
+            ],
+            'unit_amount' => $item['price'] * 100, // in cents
+        ],
+        'quantity' => $item['quantity'],
+    ];
+}
+
+$checkout_session = \Stripe\Checkout\Session::create([
+    'payment_method_types' => ['card'],
+    'line_items' => $line_items,
+    'mode' => 'payment',
+    'success_url' => 'http://localhost/the-scent/thankyou.php',
+    'cancel_url' => 'http://localhost/the-scent/view-cart.php',
+]);
+
+header("Location: " . $checkout_session->url);
+exit;
+```
+
+---
+
+### 📁 Update `view-cart.php` – Add Stripe Checkout Button
+
+```php
+<?php if (!empty($cart)): ?>
+    <form action="pay.php" method="POST">
+        <button class="btn" type="submit">Pay with Card (Stripe)</button>
+    </form>
+<?php endif; ?>
+```
+
+✅ Stripe integration is now complete (test mode).
+
+---
+
+# ✅ 2. Customer Registration + Login System
+
+We’ll now allow customers to register, login, and view their order history.
+
+---
+
+### 📁 File: `register.php`
+
+```php
+<?php
+require 'includes/db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
+    $stmt->execute([$name, $email, $password]);
+
+    header("Location: login.php");
+    exit;
+}
+?>
+
+<h2>Register</h2>
+<form method="post">
+    <input type="text" name="name" placeholder="Full Name" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <input type="password" name="password" placeholder="Password" required><br><br>
+    <button type="submit">Register</button>
+</form>
+```
+
+---
+
+### 📁 File: `login.php`
+
+```php
+<?php
+session_start();
+require 'includes/db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user'] = $user;
+        header("Location: my-orders.php");
+        exit;
+    } else {
+        $error = "Invalid login.";
+    }
+}
+?>
+
+<h2>Login</h2>
+<?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+<form method="post">
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <input type="password" name="password" placeholder="Password" required><br><br>
+    <button type="submit">Login</button>
+</form>
+```
+
+---
+
+### 📁 File: `logout.php`
+
+```php
+<?php
+session_start();
+session_destroy();
+header("Location: index.html");
+exit;
+```
+
+✅ User auth system complete.
+
+---
+
+# ✅ 3. Customer Order History – `my-orders.php`
+
+```php
+<?php
+session_start();
+require 'includes/db.php';
+
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user_id = $_SESSION['user']['id'];
+
+$stmt = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY id DESC");
+$stmt->execute([$user_id]);
+$orders = $stmt->fetchAll();
+?>
+
+<h2>My Orders</h2>
+<?php if (empty($orders)): ?>
+    <p>You have no orders yet.</p>
+<?php else: ?>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Order ID</th><th>Total</th><th>Status</th><th>Date</th>
+        </tr>
+        <?php foreach ($orders as $order): ?>
+            <tr>
+                <td><?= $order['id'] ?></td>
+                <td>$<?= number_format($order['total'], 2) ?></td>
+                <td><?= $order['status'] ?></td>
+                <td><?= $order['created_at'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
+<a href="logout.php">Logout</a>
+```
+
+✅ Customers can now view their order history.
+
+---
+
+## ✅ What We’ve Added in Phase 2:
+
+| Feature                        | Status |
+|-------------------------------|--------|
+| Stripe Payment Integration    | ✅     |
+| Customer Registration         | ✅     |
+| Customer Login/Logout         | ✅     |
+| My Orders Page                | ✅     |
+
+---
+
+## 🔜 Next Steps (Upcoming Features)
+
+If you’d like, I can now implement:
+
+1. 🔍 **Product search & category filtering**
+2. 📧 **Email notifications (e.g., order confirmation)**
+3. 🔐 **Security hardening (CSRF tokens, input sanitization)**
+4. 🛒 **AJAX-based cart for UX improvement**
+5. 🌐 **Multi-language / currency (optional)**
+
+Would you like to proceed with search & filtering next, or focus on security/email features first?
