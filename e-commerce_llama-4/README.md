@@ -238,3 +238,302 @@ Now, let's start crafting the **Improved Landing Page** (Phase 1). I'll provide 
         .btn {
             display: inline-block;
             padding: 14px 35px;
+
+Let's continue with the implementation.
+
+**Completing the Hero Section**
+-------------------------------
+
+1. **Add 3D Canvas for Wow Effect**:
+   - Use **Three.js** to create a rotating sphere with essential oil bottles or particles.
+   - Fallback to a high-quality background image if WebGL isn't supported.
+
+2. **Typed.js for Dynamic Text**:
+   - Rotate taglines like "Relax. Rejuvenate. Refresh."
+
+3. **CTA Button with Hover Effects**:
+   - Use `--accent-color` for contrast and smooth transitions.
+
+**Products Section Enhancements**
+---------------------------------
+
+1. **Grid Layout with Hover Lift Effect**.
+2. **Quick View Modal** for product details.
+3. **Star Ratings & Badges** (e.g., "Best Seller," "New Arrival").
+
+**Story Section with Parallax**
+------------------------------
+
+1. **Fixed Background Image** with scroll-triggered text animations.
+2. **Quote Carousel** for customer testimonials.
+
+**Responsive Design & Mobile Optimizations**
+--------------------------------------------
+
+1. **Hamburger Menu** for smaller screens.
+2. **Touch-Friendly Buttons & Sliders**.
+
+Here's the **completed HTML + CSS + JS** code for the improved landing page:
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Scent – Premium Aromatherapy for Mind & Body Wellness</title>
+    <meta name="description" content="Discover premium aromatherapy products: essential oils and natural soaps crafted with globally sourced ingredients to promote mental and physical wellness. Experience The Scent.">
+    
+    <!-- OpenGraph Meta Tags -->
+    <meta property="og:title" content="The Scent – Natural Aromatherapy Solutions">
+    <meta property="og:description" content="High-quality essential oils and custom natural soaps for holistic well-being. Globally sourced, creatively formulated by The Scent.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent6.jpg">
+    <meta property="og:url" content="https://www.scent.com.sg/">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #3a5a40;
+            --secondary-color: #588157;
+            --accent-color: #a3b18a;
+            --light-bg: #f8f6f4;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --light-text: #f8f6f4;
+            --footer-bg: #344e41;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-color);
+            line-height: 1.7;
+            background-color: var(--light-bg);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(248, 246, 244, 0.97);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 45px;
+            transition: transform 0.3s ease;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 35px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--light-text);
+            overflow: hidden;
+        }
+
+        .hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent6.jpg') no-repeat center center/cover;
+        }
+
+        .hero-content {
+            z-index: 1;
+            max-width: 800px;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+            font-style: italic;
+        }
+
+        .typed-text {
+            font-size: 1.4rem;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: #ddd;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+            color: var(--light-text);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Products Section */
+        .products {
+            padding: 100px 0;
+            text-align: center;
+            background: var(--light-bg);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 25px;
+            text-align: left;
+        }
+
+        .product-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .product-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 15px;
+            min-height: 50px;
+        }
+
+        .rating {
+            color: #f39c12;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        /* Quick View Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* Story Section */
+        .story {
+            padding: 120px 0;
+            color: var(--light-text);
+            background: url('https://images.unsplash.com/photo-151968
