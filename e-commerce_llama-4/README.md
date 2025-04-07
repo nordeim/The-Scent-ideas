@@ -537,3 +537,273 @@ Here's the **completed HTML + CSS + JS** code for the improved landing page:
             padding: 120px 0;
             color: var(--light-text);
             background: url('https://images.unsplash.com/photo-151968
+
+Let's finish the remaining sections and add the necessary JavaScript for interactivity.
+
+**Completing the Story Section**
+-------------------------------
+
+1. **Parallax Background Image**.
+2. **Scroll-Triggered Animations** (AOS Library).
+3. **Quote Carousel** for testimonials.
+
+**Footer & Social Links**
+-------------------------
+
+1. **Dark Green Background** (`--footer-bg`).
+2. **Social Icons** with hover effects.
+3. **Newsletter Signup** form.
+
+**JavaScript Functionality**
+---------------------------
+
+1. **Typed.js** for hero taglines.
+2. **AOS** for scroll animations.
+3. **Quick View Modal** logic for products.
+4. **Smooth Scroll** for navigation links.
+5. **Mobile Menu Toggle**.
+
+Here's the **completed code**:
+
+```html
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <!-- Meta Tags (Same as before) -->
+    <title>The Scent – Premium Aromatherapy for Mind & Body Wellness</title>
+    <!-- Google Fonts & CSS Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* Previous CSS Styles (Hero, Products, etc.) */
+
+        /* Story Section */
+        .story {
+            padding: 120px 0;
+            color: var(--light-text);
+            background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba') fixed center/cover;
+            position: relative;
+            text-align: center;
+        }
+
+        .story::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(58, 90, 64, 0.85);
+            z-index: 0;
+        }
+
+        .story-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .story h2 {
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .testimonials {
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .testimonial.active {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--footer-bg);
+            color: var(--light-text);
+            padding: 60px 0 20px;
+            text-align: center;
+        }
+
+        .social-icons {
+            margin-bottom: 30px;
+        }
+
+        .social-icons a {
+            color: var(--light-text);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--accent-color);
+        }
+
+        .newsletter-form {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            padding: 12px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            width: 70%;
+        }
+
+        .newsletter-form button {
+            padding: 12px;
+            border: none;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            font-weight: bold;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 20px;
+                background: var(--light-bg);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            .hamburger {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/logo.png" alt="The Scent Logo">
+        </div>
+        <nav>
+            <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <canvas class="hero-canvas"></canvas>
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Welcome to The Scent</h1>
+            <div class="typed-text">
+                <span id="typed"></span>
+            </div>
+            <a href="#products" class="btn">Explore Our Products</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <div id="products" class="products">
+        <h2 data-aos="fade-up">Our Signature Products</h2>
+        <div class="product-grid">
+            <div class="product-card" data-aos="zoom-in">
+                <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent2.jpg" alt="Essential Oil">
+                <div class="product-info">
+                    <h3>Lavender Bliss</h3>
+                    <p>Calming essential oil for better sleep.</p>
+                    <div class="rating">★★★★☆</div>
+                    <button class="btn btn-primary" onclick="openModal('Lavender Bliss', 'https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent2.jpg')">Quick View</button>
+                </div>
+            </div>
+            <!-- Repeat for other products -->
+        </div>
+    </section>
+
+    <!-- Quick View Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modal-image" src="" alt="Product Image">
+            <h3 id="modal-title"></h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</p>
+            <button class="btn btn-primary">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Story Section -->
+    <section id="story" class="story">
+        <div class="story-content" data-aos="fade-right">
+            <h2>Our Journey</h2>
+            <p>At The Scent, we believe in the power of nature. Our products are crafted with love, using globally sourced ingredients to bring harmony to your mind and body.</p>
+            <div class="testimonials">
+                <div class="testimonial active">"The Scent's lavender oil changed my sleep routine!" - Sarah</div>
+                <div class="testimonial">"Natural soaps that nourish my skin." - Mark</div>
+                <div class="testimonial">"Aromatherapy like never before!" - Emma</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <p>&copy; 2025 The Scent. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <script>
+        // Typed.js
+        var typed = new Typed("#typed", {
+            strings: ["Relax. Rejuvenate. Refresh.", "Breathe Wellness.", "Nature in a Bottle."],
+            typeSpeed: 50,
+            backSpeed: 30,
+            loop: true
+        });
+
+        // AOS Initialize
+        AOS.init({
+            duration: 1200,
+            once: true
+        });
+
+        // Modal Logic
