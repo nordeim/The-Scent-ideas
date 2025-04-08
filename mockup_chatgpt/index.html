@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="The Scent - Premium aromatherapy products crafted to promote mental and physical health." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Scent | Holistic Aromatherapy</title>
+
+  <!-- Tailwind CSS (CDN for demo; use a proper build pipeline in production) -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /* Customize color variables to reflect the mockup’s palette or your brand */
+    :root {
+      --color-primary: #4A5568; /* Dark text or header color */
+      --color-accent:  #ED8936; /* Accent highlight color */
+      --color-bg:      #F7FAFC; /* Light background color */
+      --color-footer:  #2D3748; /* Footer background color */
+    }
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-primary);
+    }
+    .header, .footer {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+    .header a, .footer a {
+      color: var(--color-accent);
+      transition: color 0.2s ease;
+    }
+    .header a:hover, .footer a:hover {
+      color: #FFA462; /* Slightly lighter accent on hover */
+    }
+    .hero-bg {
+      background: url('https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent4.jpg') center/cover no-repeat;
+      min-height: 60vh;
+    }
+    .hero-overlay {
+      background-color: rgba(0,0,0,0.4);
+    }
+    .btn-primary {
+      background-color: var(--color-accent);
+      color: #fff;
+      transition: background-color 0.2s ease;
+    }
+    .btn-primary:hover {
+      background-color: #ffa462; /* Lighter on hover */
+    }
+    /* Adjust any additional styling to match your exact mockup’s details */
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- HEADER -->
+<header class="header py-4 shadow-md">
+  <div class="max-w-7xl mx-auto flex justify-between items-center px-6">
+    <div class="text-2xl font-bold">The Scent</div>
+    <nav>
+      <ul class="flex space-x-6">
+        <li><a href="#home" class="hover:underline">Home</a></li>
+        <li><a href="#shop" class="hover:underline">Shop</a></li>
+        <li><a href="#about" class="hover:underline">Our Story</a></li>
+        <li><a href="#contact" class="hover:underline">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO SECTION -->
+<section id="home" class="hero-bg text-white relative flex items-center">
+  <div class="hero-overlay absolute inset-0"></div>
+  <div class="relative max-w-4xl mx-auto w-full text-center py-20 px-6">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">Reawaken Your Senses</h1>
+    <p class="text-lg md:text-xl mb-8">
+      Discover premium aromatherapy products that bring harmony to mind and body.
+    </p>
+    <a href="#shop" class="inline-block btn-primary px-8 py-3 rounded-full font-medium text-lg">
+      Explore Our Collection
+    </a>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<main class="mt-10">
+
+  <!-- PRODUCTS / SHOWCASE SECTION -->
+  <section id="shop" class="max-w-7xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold text-center mb-10">Featured Products</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Product card example: copy for additional items -->
+      <div class="bg-white rounded-md shadow-md overflow-hidden">
+        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent5.jpg" alt="Essential Oil" class="h-48 w-full object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2">Calming Lavender Oil</h3>
+          <p class="text-gray-600 mb-4">$25.00</p>
+          <a href="#" class="text-sm font-medium text-indigo-600 hover:underline">View Details</a>
+        </div>
+      </div>
+      <div class="bg-white rounded-md shadow-md overflow-hidden">
+        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent6.jpg" alt="Essential Oil" class="h-48 w-full object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2">Citrus Bliss Blend</h3>
+          <p class="text-gray-600 mb-4">$29.00</p>
+          <a href="#" class="text-sm font-medium text-indigo-600 hover:underline">View Details</a>
+        </div>
+      </div>
+      <div class="bg-white rounded-md shadow-md overflow-hidden">
+        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/soap2.jpg" alt="Natural Soap" class="h-48 w-full object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2">Rose Infused Soap</h3>
+          <p class="text-gray-600 mb-4">$12.00</p>
+          <a href="#" class="text-sm font-medium text-indigo-600 hover:underline">View Details</a>
+        </div>
+      </div>
+      <div class="bg-white rounded-md shadow-md overflow-hidden">
+        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/soap6.jpg" alt="Soap Bars" class="h-48 w-full object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-semibold mb-2">Cedarwood Soap Bar</h3>
+          <p class="text-gray-600 mb-4">$14.00</p>
+          <a href="#" class="text-sm font-medium text-indigo-600 hover:underline">View Details</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / OUR STORY -->
+  <section id="about" class="bg-white py-16">
+    <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center">
+      <div class="md:w-1/2 md:pr-8 mb-6 md:mb-0">
+        <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent2.jpg" alt="Our Story Image" class="w-full h-auto rounded shadow">
+      </div>
+      <div class="md:w-1/2">
+        <h2 class="text-3xl font-bold mb-4">Our Story</h2>
+        <p class="text-gray-700 mb-4">
+          At The Scent, we source and craft aromatherapy products that celebrate the balance between mind and body. Our passion for nature’s finest raw materials drives us to constantly create new blends that transport you to a place of calm, luxury, and well-being.
+        </p>
+        <p class="text-gray-700 mb-6">
+          Join us on a journey of healing, where every aroma is thoughtfully designed to promote harmony and rejuvenation. We believe that scent can transform moods, relieve stress, and awaken the senses—let us show you how.
+        </p>
+        <a href="#contact" class="btn-primary px-6 py-2 rounded-full font-medium">Contact Us</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer id="contact" class="footer py-8 mt-10">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row justify-between items-start space-y-6 md:space-y-0">
+      <!-- Contact Info -->
+      <div class="md:w-1/3">
+        <h3 class="text-xl font-bold mb-2">The Scent</h3>
+        <p class="text-sm text-gray-200">
+          We create premium aromatherapy products to enhance mental and physical well-being through the power of scent.
+        </p>
+      </div>
+      <!-- Links -->
+      <div class="md:w-1/3 flex justify-between space-x-10">
+        <div>
+          <h4 class="font-semibold mb-3">Shop</h4>
+          <ul class="space-y-1 text-sm">
+            <li><a href="#shop" class="hover:underline">Essential Oils</a></li>
+            <li><a href="#shop" class="hover:underline">Natural Soaps</a></li>
+            <li><a href="#shop" class="hover:underline">Gift Sets</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-3">Info</h4>
+          <ul class="space-y-1 text-sm">
+            <li><a href="#" class="hover:underline">FAQs</a></li>
+            <li><a href="#" class="hover:underline">Shipping & Returns</a></li>
+            <li><a href="#" class="hover:underline">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Contact / Address -->
+      <div class="md:w-1/3">
+        <h4 class="font-semibold mb-3">Contact</h4>
+        <p class="text-sm">123 Aromatherapy Lane<br />Wellness City, WB 12345</p>
+        <p class="text-sm mt-2">+1 (123) 555-4567<br />hello@thescent.com</p>
+      </div>
+    </div>
+    <hr class="my-6 border-gray-600" />
+    <div class="flex flex-col md:flex-row items-center justify-between text-sm text-gray-300">
+      <p class="mb-2 md:mb-0">&copy; 2025 The Scent. All rights reserved.</p>
+      <div>
+        <a href="#" class="hover:underline px-2">Terms of Service</a>|
+        <a href="#" class="hover:underline px-2">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
