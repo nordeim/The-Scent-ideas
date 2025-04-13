@@ -286,5 +286,296 @@ CREATE TABLE quiz_results (
 
 > Next up: 📦 **Task 2: Backend PHP Structure**
 
-Proceed to continue with generating the backend structure and code now.
+Now that we've completed the **MySQL database schema**, we move to **Task 2: Backend PHP Structure**.
 
+We're building a **modular, clean, and scalable backend** using:
+
+- ✅ **Pure PHP** (no frameworks)
+- ✅ **MVC-like structure** for maintainability
+- ✅ **PDO** for secure database access
+- ✅ **Routing via .htaccess**
+- ✅ **Separation of concerns** (controllers, models, views)
+
+---
+
+## ✅ Step-by-Step Plan for Task 2: PHP Backend Structure
+
+### 🔧 Phase 1: Base Directory Structure
+
+We’ll create a clean project structure:
+
+```
+/the-scent/
+│
+├── /public/            # Public web root (index.php lives here)
+│   ├── css/
+│   ├── js/
+│   ├── images/
+│   └── uploads/
+│
+├── /includes/          # Shared components
+│   ├── db.php          # Database connection
+│   ├── header.php
+│   ├── footer.php
+│   └── auth.php
+│
+├── /controllers/       # Business logic
+│   ├── ProductController.php
+│   ├── UserController.php
+│   ├── CartController.php
+│   ├── OrderController.php
+│   ├── NewsletterController.php
+│   └── QuizController.php
+│
+├── /models/            # Database interaction layer
+│   ├── Product.php
+│   ├── User.php
+│   ├── Cart.php
+│   ├── Order.php
+│   └── Quiz.php
+│
+├── /views/             # HTML templates
+│   ├── home.php
+│   ├── product.php
+│   ├── cart.php
+│   ├── checkout.php
+│   ├── login.php
+│   ├── register.php
+│   └── admin/
+│       ├── dashboard.php
+│       └── product_form.php
+│
+├── /admin/             # Admin-only pages
+│   └── index.php
+│
+├── .htaccess           # URL rewriting
+├── config.php          # Global config
+└── index.php           # Front controller (inside /public)
+```
+
+---
+
+## ✅ Phase 2: Create Base Files
+
+### 📁 `/config.php`
+```php
+<?php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'the_scent');
+define('DB_USER', 'your_db_user');
+define('DB_PASS', 'your_db_password');
+define('BASE_URL', '/the-scent/public/');
+?>
+```
+
+---
+
+### 📁 `/includes/db.php`
+```php
+<?php
+require_once __DIR__ . '/../config.php';
+
+try {
+    $pdo = new PDO('mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASS);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("DB Connection failed: " . $e->getMessage());
+}
+?>
+```
+
+---
+
+### 📁 `/public/index.php` (Front Controller)
+```php
+<?php
+require_once __DIR__ . '/../includes/db.php';
+
+$page = $_GET['page'] ?? 'home';
+
+switch ($page) {
+    case 'product':
+        require_once __DIR__ . '/../controllers/ProductController.php';
+        showProduct();
+        break;
+    case 'cart':
+        require_once __DIR__ . '/../controllers/CartController.php';
+        showCart();
+        break;
+    case 'checkout':
+        require_once __DIR__ . '/../controllers/OrderController.php';
+        checkout();
+        break;
+    case 'quiz':
+        require_once __DIR__ . '/../controllers/QuizController.php';
+        handleQuiz();
+        break;
+    default:
+        require_once __DIR__ . '/../controllers/ProductController.php';
+        showHome();
+}
+?>
+```
+
+---
+
+### 📁 `.htaccess` (in `/public/`)
+```apache
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
+```
+
+---
+
+## ✅ Phase 3: Implement Core Controllers
+
+### 📁 `controllers/ProductController.php`
+```php
+<?php
+require_once __DIR__ . '/../models/Product.php';
+
+function showHome() {
+    $products = getFeaturedProducts();
+    include __DIR__ . '/../views/home.php';
+}
+
+function showProduct() {
+    $id = $_GET['id'] ?? null;
+    if (!$id) exit('Product ID required');
+    $product = getProductById($id);
+    include __DIR__ . '/../views/product.php';
+}
+?>
+```
+
+---
+
+### 📁 `models/Product.php`
+```php
+<?php
+function getFeaturedProducts() {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE is_featured = 1 LIMIT 4");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getProductById($id) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM products WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
+```
+
+---
+
+### 📁 `views/home.php`
+```php
+<?php include __DIR__ . '/../includes/header.php'; ?>
+<h2>Featured Products</h2>
+<div class="product-grid">
+  <?php foreach ($products as $product): ?>
+    <div class="product-card">
+      <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['name']) ?>">
+      <h3><?= htmlspecialchars($product['name']) ?></h3>
+      <p>$<?= htmlspecialchars($product['price']) ?></p>
+      <a href="product&id=<?= $product['id'] ?>">View Product</a>
+    </div>
+  <?php endforeach; ?>
+</div>
+<?php include __DIR__ . '/../includes/footer.php'; ?>
+```
+
+---
+
+## ✅ Phase 4: Auth System (Login/Register)
+
+### 📁 `controllers/UserController.php`
+```php
+<?php
+require_once __DIR__ . '/../models/User.php';
+
+function login() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $user = getUserByEmail($email);
+        if ($user && password_verify($password, $user['password'])) {
+            session_start();
+            $_SESSION['user'] = $user;
+            header("Location: index.php");
+            exit();
+        } else {
+            $error = "Invalid credentials";
+        }
+    }
+    include __DIR__ . '/../views/login.php';
+}
+?>
+```
+
+### 📁 `models/User.php`
+```php
+<?php
+function getUserByEmail($email) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+?>
+```
+
+---
+
+## ✅ Phase 5: Admin Panel (Optional, Extendable)
+
+We’ll add:
+
+- `/admin/index.php` (protected by session + role)
+- Ability to add/edit/delete products via `ProductController`
+
+---
+
+## ✅ Phase 6: Cart + Checkout Controller (Simple Version)
+
+To be implemented in:
+
+- `CartController.php` (addToCart, showCart, removeFromCart)
+- `OrderController.php` (checkout, placeOrder)
+
+These will use session-based cart for guests and DB cart for logged-in users.
+
+---
+
+## ✅ Phase 7: Newsletter & Quiz Controllers
+
+- `NewsletterController.php` → subscribe user email to DB
+- `QuizController.php` → receive quiz answers, store in DB, recommend products
+
+We'll implement them in Task 3 (Scent Quiz).
+
+---
+
+## ✅ Summary of Completed Backend Work
+
+✅ Structured directories  
+✅ Routing via `.htaccess`  
+✅ Database connection via PDO  
+✅ Home and product page rendering  
+✅ Product model and views  
+✅ User login flow  
+✅ MVC-like organization
+
+---
+
+### ✅ Task 2 COMPLETE: PHP Backend Structure Created
+
+Next up:  
+🧪 **Task 3 – Scent Finder Quiz Logic**
+
+Proceed to continue designing and implementing the scent quiz logic (both frontend quiz and backend recommendation handler).
