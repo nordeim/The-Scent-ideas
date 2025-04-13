@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Scent – Premium Aromatherapy & Natural Well-being</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500&family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <!-- AOS (Animate On Scroll) -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- SVG animated mist overlay -->
+  <div class="scent-mist-overlay" aria-hidden="true">
+    <svg viewBox="0 0 320 80" width="100%" height="100%">
+      <path class="mist1" d="M0,40 Q60,20 120,40 T240,40 T320,30" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="18"/>
+      <path class="mist2" d="M0,60 Q80,80 160,60 T320,50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12"/>
+    </svg>
+  </div>
+  <!-- Ambient audio toggle -->
+  <div class="ambient-audio-toggle">
+    <audio id="ambient-audio" loop src="relaxing-001.m4a"></audio>
+    <button id="audio-toggle-btn" aria-label="Toggle background sound">
+      <i class="fas fa-volume-mute"></i>
+    </button>
+  </div>
+  <!-- Header -->
+  <header class="main-header">
+    <div class="container header-container">
+      <div class="logo">
+        <a href="#">The Scent</a>
+        <span>AROMATHERAPY</span>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#products">Shop</a></li>
+          <li><a href="#finder">Scent Finder</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-icons">
+        <a href="#" aria-label="Search"><i class="fas fa-search"></i></a>
+        <a href="#" aria-label="Account"><i class="fas fa-user"></i></a>
+        <a href="#" aria-label="Cart"><i class="fas fa-shopping-bag"></i></a>
+      </div>
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <nav class="mobile-nav">
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#products">Shop</a></li>
+        <li><a href="#finder">Scent Finder</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#">Search</a></li>
+        <li><a href="#">Account</a></li>
+        <li><a href="#">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+      <div class="hero-media">
+        <video autoplay muted loop playsinline poster="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent5.jpg">
+          <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+          <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent5.jpg" alt="Calming Nature">
+        </video>
+      </div>
+      <div class="container hero-content" data-aos="fade-in">
+        <h1>Find Your Moment of Calm</h1>
+        <p>Experience premium, natural aromatherapy crafted to enhance well-being and restore balance.</p>
+        <a href="#products" class="btn btn-primary">Explore Our Collections</a>
+      </div>
+    </section>
+    <!-- About Section with ingredient map -->
+    <section id="about" class="about-section">
+      <div class="container about-container">
+        <div class="about-image" data-aos="fade-right">
+          <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent6.jpg" alt="Natural Ingredients">
+        </div>
+        <div class="about-text" data-aos="fade-left">
+          <h2>Rooted in Nature, Crafted with Care</h2>
+          <p>At The Scent, we harness the power of nature to nurture your mental and physical well-being. Our high-quality, sustainably sourced ingredients are transformed into exquisite aromatherapy products that help you reclaim balance and serenity.</p>
+          <a href="#" class="btn btn-secondary">Learn Our Story</a>
+        </div>
+      </div>
+      <!-- Ingredient provenance map -->
+      <div class="ingredient-map-container" data-aos="fade-up">
+        <h3>Our Global Ingredients</h3>
+        <div class="ingredient-map">
+          <!-- SVG world map (simple or swap for your custom image) -->
+          <img src="https://raw.githubusercontent.com/nordeim/The-Scent-ideas/refs/heads/main/images/BlankMap-World-noborders.jpg" alt="Ingredient Origins">
+          <!-- Example Points -->
+          <div class="map-point" style="left:41%;top:57%;">
+            <div class="point-pulse"></div>
+            <span class="map-tooltip">Lavender<br><small>France</small></span>
+          </div>
+          <div class="map-point" style="left:74%;top:53%;">
+            <div class="point-pulse"></div>
+            <span class="map-tooltip">Cedarwood<br><small>Japan</small></span>
+          </div>
+          <div class="map-point" style="left:48%;top:59%;">
+            <div class="point-pulse"></div>
+            <span class="map-tooltip">Rosemary<br><small>Mediterranean</small></span>
+          </div>
+          <div class="map-point" style="left:36%;top:74%;">
+            <div class="point-pulse"></div>
+            <span class="map-tooltip">Orange<br><small>Brazil</small></span>
+          </div>
+          <!-- ...add more as desired -->
+        </div>
+      </div>
+    </section>
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+      <div class="container">
+        <h2 data-aos="fade-down">Featured Collections</h2>
+        <div class="product-grid">
+          <div class="product-card" data-aos="fade-up" data-aos-delay="100">
+            <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent2.jpg" alt="Serenity Blend Oil">
+            <div class="product-info">
+              <h3>Serenity Blend Oil</h3>
+              <p>Calming Lavender & Chamomile</p>
+              <a href="#" class="product-link">View Product</a>
+            </div>
+          </div>
+          <div class="product-card" data-aos="fade-up" data-aos-delay="200">
+            <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/soap4.jpg" alt="Citrus Burst Soap">
+            <div class="product-info">
+              <h3>Citrus Burst Soap</h3>
+              <p>Energizing Lemon & Orange Peel</p>
+              <a href="#" class="product-link">View Product</a>
+            </div>
+          </div>
+          <div class="product-card" data-aos="fade-up" data-aos-delay="300">
+            <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/scent4.jpg" alt="Focus Flow Oil">
+            <div class="product-info">
+              <h3>Focus Flow Oil</h3>
+              <p>Invigorating Rosemary & Mint</p>
+              <a href="#" class="product-link">View Product</a>
+            </div>
+          </div>
+          <div class="product-card" data-aos="fade-up" data-aos-delay="400">
+            <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/soap6.jpg" alt="Woodland Retreat Soap">
+            <div class="product-info">
+              <h3>Woodland Retreat Soap</h3>
+              <p>Grounding Cedarwood & Pine</p>
+              <a href="#" class="product-link">View Product</a>
+            </div>
+          </div>
+        </div>
+        <div class="view-all-cta">
+          <a href="#" class="btn btn-primary">Shop All Products</a>
+        </div>
+      </div>
+    </section>
+    <!-- Scent Finder Interactive Quiz Section -->
+    <section id="finder" class="finder-section">
+      <div class="container">
+        <h2 data-aos="fade-up">Discover Your Perfect Scent</h2>
+        <form id="scent-quiz" class="scent-quiz" autocomplete="off" data-aos="fade-up">
+          <div class="quiz-step" data-step="1">
+            <h3>What do you want right now?</h3>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-value="relax"><i class="fas fa-leaf"></i> Relaxation</button>
+              <button type="button" class="quiz-option" data-value="energize"><i class="fas fa-bolt"></i> Energy</button>
+              <button type="button" class="quiz-option" data-value="focus"><i class="fas fa-brain"></i> Focus</button>
+              <button type="button" class="quiz-option" data-value="sleep"><i class="fas fa-moon"></i> Restful Sleep</button>
+            </div>
+          </div>
+          <div class="quiz-step" data-step="2" style="display:none;">
+            <h3>Which scents appeal to you?</h3>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-value="floral"><i class="fas fa-seedling"></i> Floral</button>
+              <button type="button" class="quiz-option" data-value="citrus"><i class="fas fa-lemon"></i> Citrus</button>
+              <button type="button" class="quiz-option" data-value="woody"><i class="fas fa-tree"></i> Woody</button>
+              <button type="button" class="quiz-option" data-value="herbal"><i class="fas fa-spa"></i> Herbal</button>
+            </div>
+          </div>
+          <div class="quiz-step" data-step="3" style="display:none;">
+            <h3>Pick your preferred format:</h3>
+            <div class="quiz-options">
+              <button type="button" class="quiz-option" data-value="oil"><i class="fas fa-bottle-droplet"></i> Essential Oil</button>
+              <button type="button" class="quiz-option" data-value="soap"><i class="fas fa-soap"></i> Soap</button>
+              <button type="button" class="quiz-option" data-value="both"><i class="fas fa-box"></i> Both</button>
+            </div>
+          </div>
+          <div class="quiz-progress">
+            <span>Step <span id="current-step">1</span> of 3</span>
+          </div>
+        </form>
+        <div id="scent-quiz-result" class="quiz-result" data-aos="fade-up" style="display:none;">
+          <h4>Your Aroma Match</h4>
+          <div class="product-grid result-product-grid">
+            <!-- JS-driven recommendations -->
+          </div>
+          <a href="#products" class="btn btn-primary" style="margin-top:2rem;">View All Products</a>
+        </div>
+      </div>
+    </section>
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+      <div class="container">
+        <h2 data-aos="fade-up">What Our Community Says</h2>
+        <div class="testimonial-grid">
+          <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+            <p>"The Lavender Essential Oil transformed my bedtime routine—its calming aroma truly helps me unwind."</p>
+            <span class="testimonial-author">- Sarah L., Los Angeles</span>
+            <div class="testimonial-rating">★★★★★</div>
+          </div>
+          <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+            <p>"The Focus Blend oil improved my concentration at home without overwhelming my senses."</p>
+            <span class="testimonial-author">- Michael T., Chicago</span>
+            <div class="testimonial-rating">★★★★★</div>
+          </div>
+          <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+            <p>"Handcrafted soaps that feel divine and truly nourish sensitive skin. A luxurious experience."</p>
+            <span class="testimonial-author">- Emma R., Seattle</span>
+            <div class="testimonial-rating">★★★★★</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Newsletter Section -->
+    <section id="newsletter" class="newsletter-section">
+      <div class="container newsletter-container">
+        <h2>Join Our Community</h2>
+        <p>Subscribe for exclusive offers, aromatherapy tips, and first access to new products.</p>
+        <form class="newsletter-form">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+        <p class="newsletter-consent">By subscribing, you agree to our Privacy Policy.</p>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer id="contact" class="main-footer">
+    <div class="container footer-grid">
+      <div class="footer-about">
+        <h3>About The Scent</h3>
+        <p>Creating premium aromatherapy products to enhance mental and physical well-being through the power of nature.</p>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3>Shop</h3>
+        <ul>
+          <li><a href="#">Essential Oils</a></li>
+          <li><a href="#">Natural Soaps</a></li>
+          <li><a href="#">Gift Sets</a></li>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Bestsellers</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Help</h3>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Shipping & Returns</a></li>
+          <li><a href="#">Track Your Order</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h3>Contact Us</h3>
+        <p><i class="fas fa-map-marker-alt"></i> 123 Aromatherapy Lane, Wellness City, WB 12345</p>
+        <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+        <p><i class="fas fa-envelope"></i> hello@thescent.com</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2025 The Scent. All rights reserved.</p>
+        <div class="payment-methods">
+          <span>Accepted Payments:</span>
+          <i class="fab fa-cc-visa"></i>
+          <i class="fab fa-cc-mastercard"></i>
+          <i class="fab fa-cc-paypal"></i>
+          <i class="fab fa-cc-amex"></i>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Mobile Nav
+    const toggleButton = document.querySelector('.mobile-nav-toggle');
+    const mobileNav = document.querySelector('.mobile-nav');
+    const mainHeader = document.querySelector('.main-header');
+    if (toggleButton && mobileNav && mainHeader) {
+      toggleButton.addEventListener('click', () => {
+        mobileNav.classList.toggle('active');
+        mainHeader.classList.toggle('mobile-menu-active');
+        const icon = toggleButton.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+      });
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileNav.classList.remove('active');
+          mainHeader.classList.remove('mobile-menu-active');
+          const icon = toggleButton.querySelector('i');
+          icon.classList.add('fa-bars');
+          icon.classList.remove('fa-times');
+        });
+      });
+    }
+    // Sticky Header on Scroll
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) mainHeader.classList.add('sticky');
+      else mainHeader.classList.remove('sticky');
+    });
+
+    // Ambient audio toggle logic
+    const audio = document.getElementById('ambient-audio');
+    const audioBtn = document.getElementById('audio-toggle-btn');
+    audio.volume = 0.18;
+    audioBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        audioBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+      } else {
+        audio.pause();
+        audioBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+      }
+    });
+
+    // Ingredient map point tooltips
+    document.querySelectorAll('.map-point').forEach(point => {
+      point.addEventListener('mouseenter', () => point.querySelector('.map-tooltip').style.opacity = 1);
+      point.addEventListener('mouseleave', () => point.querySelector('.map-tooltip').style.opacity = 0);
+      point.addEventListener('focus', () => point.querySelector('.map-tooltip').style.opacity = 1);
+      point.addEventListener('blur', () => point.querySelector('.map-tooltip').style.opacity = 0);
+    });
+
+    // Scent Quiz
+    let quizAnswers = [];
+    const steps = document.querySelectorAll('.quiz-step');
+    let stepIndex = 0;
+    function showStep(idx) {
+      steps.forEach((step, i) => step.style.display = (i === idx) ? '' : 'none');
+      document.getElementById('current-step').textContent = idx + 1;
+    }
+    function showResult() {
+      document.getElementById('scent-quiz-result').style.display = '';
+      // Mapping answers to recommended products
+      const [want, scent, format] = quizAnswers;
+      let products = [];
+      if (want === 'relax' && scent === 'floral') products.push({img:'scent2.jpg',name:'Serenity Blend Oil',desc:'Lavender & Chamomile',link:'#'});
+      else if (want === 'focus' && scent === 'herbal') products.push({img:'scent4.jpg',name:'Focus Flow Oil',desc:'Rosemary & Mint',link:'#'});
+      else if (want === 'energize' && scent === 'citrus') products.push({img:'soap4.jpg',name:'Citrus Burst Soap',desc:'Lemon & Orange Peel',link:'#'});
+      else if (want === 'sleep' && scent === 'woody') products.push({img:'soap6.jpg',name:'Woodland Retreat Soap',desc:'Cedarwood & Pine',link:'#'});
+      else if (scent === 'woody') products.push({img:'soap6.jpg',name:'Woodland Retreat Soap',desc:'Cedarwood & Pine',link:'#'});
+      else if (scent === 'citrus') products.push({img:'soap4.jpg',name:'Citrus Burst Soap',desc:'Lemon & Orange Peel',link:'#'});
+      else if (scent === 'herbal') products.push({img:'scent4.jpg',name:'Focus Flow Oil',desc:'Rosemary & Mint',link:'#'});
+      else products.push({img:'scent2.jpg',name:'Serenity Blend Oil',desc:'Lavender & Chamomile',link:'#'});
+      // Filter by format
+      if (format === 'oil') products = products.filter(p=>p.name.includes('Oil'));
+      else if (format === 'soap') products = products.filter(p=>p.name.includes('Soap'));
+      // If format is 'both' or no match, show all matched
+      if (products.length === 0) products = [
+        {img:'scent2.jpg',name:'Serenity Blend Oil',desc:'Lavender & Chamomile',link:'#'},
+        {img:'soap4.jpg',name:'Citrus Burst Soap',desc:'Lemon & Orange Peel',link:'#'},
+        {img:'scent4.jpg',name:'Focus Flow Oil',desc:'Rosemary & Mint',link:'#'},
+        {img:'soap6.jpg',name:'Woodland Retreat Soap',desc:'Cedarwood & Pine',link:'#'}
+      ];
+      const grid = document.querySelector('.result-product-grid');
+      grid.innerHTML = products.map(p => `
+        <div class="product-card">
+          <img src="https://raw.githubusercontent.com/nordeim/The-Scent/refs/heads/main/images/${p.img}" alt="${p.name}">
+          <div class="product-info">
+            <h3>${p.name}</h3>
+            <p>${p.desc}</p>
+            <a href="${p.link}" class="product-link">Shop Now</a>
+          </div>
+        </div>
+      `).join('');
+    }
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', e => {
+        quizAnswers[stepIndex] = btn.dataset.value;
+        if (stepIndex < steps.length - 1) {
+          stepIndex++;
+          showStep(stepIndex);
+        } else {
+          document.getElementById('scent-quiz').style.display = 'none';
+          showResult();
+        }
+      });
+    });
+    window.addEventListener('DOMContentLoaded', ()=> {
+      quizAnswers = [];
+      stepIndex = 0;
+      showStep(stepIndex);
+      document.getElementById('scent-quiz').style.display = '';
+      document.getElementById('scent-quiz-result').style.display = 'none';
+      AOS.init({ once: true, duration: 1000 });
+    });
+  </script>
+</body>
+</html>
