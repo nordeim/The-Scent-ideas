@@ -10,7 +10,7 @@ We have:
 1. ✅ A **landing page HTML sample** with sections like hero video, about, product showcase, testimonials, etc.
 2. ✅ A **company description**: *The Scent* produces essential oils and natural soaps, rooted in aromatherapy for mental and physical well-being.
 3. ✅ A set of **product images** hosted on GitHub.
-4. ✅ A reference to a **sample PHP/MySQL design template** (not shown in full here, but assumed to involve basic CRUD structure, authentication, shopping cart, etc.)
+4. ✅ A reference to a **sample PHP/MySQL design template** (basic CRUD structure, authentication, shopping cart, etc.)
 
 ---
 
