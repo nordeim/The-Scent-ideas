@@ -1,0 +1,1 @@
+Create a stunningly attractive and modern e-commerce website landing page HTML within ```html and ``` tags for a top luxury brand beauty and scent products.
