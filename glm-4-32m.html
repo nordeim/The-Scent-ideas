@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXE | Luxury Beauty & Scent</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #c9a87a;
+            --secondary-color: #e5d3bc;
+            --dark-color: #2c2c2c;
+            --light-color: #f9f9f9;
+            --accent-color: #d4b483;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        
+        .logo span {
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-icons a {
+            color: var(--dark-color);
+            margin-left: 20px;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .nav-icons a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-icons a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+        
+        .hero-gradient {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 70%;
+            height: 100%;
+            background: linear-gradient(to left, rgba(255,255,255,0.9), rgba(255,255,255,0));
+            z-index: 2;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            padding: 20px;
+            z-index: 3;
+        }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            line-height: 1.2;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            line-height: 1.6;
+            color: var(--dark-color);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .hero-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(201, 168, 122, 0.3);
+        }
+        
+        .hero-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 168, 122, 0.4);
+        }
+        
+        .hero-image {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            z-index: 1;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.1));
+        }
+        
+        /* Featured Products Section */
+        .featured {
+            padding: 100px 0;
+            background-color: #ffffff;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            line-height: 1.2;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--dark-color);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 2px;
+            background-color: var(--primary-color);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-image {
+            position: relative;
+            overflow: hidden;
+            height: 300px;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(201, 168, 122, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+        
+        .product-view {
+            background-color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .product-view:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-details {
+            padding: 20px;
+        }
+        
+        .product-category {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark-color);
+        }
+        
+        .product-price {
+            font-size: 16px;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .product-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+            padding: 8px 20px;
+            border-radius: 3px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .product-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Philosophy Section */
+        .philosophy {
+            padding: 100px 0;
+            background-color: var(--light-color);
+        }
+        
+        .philosophy-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .philosophy-text {
+            flex: 1;
+            padding-right: 50px;
+        }
+        
+        .philosophy-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            color: var(--dark-color);
+        }
+        
+        .philosophy-description {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--dark-color);
+            margin-bottom: 30px;
+        }
+        
+        .philosophy-image {
+            flex: 1;
+            text-align: right;
+        }
+        
+        .philosophy-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Collections Section */
+        .collections {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-item {
+            padding: 10px 25px;
+            margin: 0 10px 10px 0;
+            background-color: #f5f5f5;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--dark-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-item:hover:not(.active) {
+            background-color: var(--secondary-color);
+        }
+        
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .collection-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .collection-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .collection-item img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .collection-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .collection-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0.8));
+            transition: height 0.3s ease;
+        }
+        
+        .collection-item:hover .collection-overlay {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .collection-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .collection-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .collection-link:hover {
+            color: var(--accent-color);
+        }
+        
+        /* New Arrivals Section */
+        .new-arrivals {
+            padding: 100px 0;
+            background-color: var(--light-color);
+        }
+        
+        .product-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        /* Shop by Category Section */
+        .category {
+            padding: 100px 0;
+            background-color: white;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .category-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 250px;
+            cursor: pointer;
+        }
+        
+        .category-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .category-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+            transition: padding 0.3s ease, background 0.3s ease;
+        }
+        
+        .category-item:hover .category-overlay {
+            padding: 30px 20px;
+            background: linear-gradient(to top, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+        }
+        
+        .category-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        
+        .category-description {
+            font-size: 14px;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        /* Newsletter Section */
+        .newsletter {
+            padding: 80px 0;
+            background-color: #f5f5f5;
+        }
+        
+        .newsletter-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .newsletter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--dark-color);
+        }
+        
+        .newsletter-description {
+            font-size: 16px;
+            margin-bottom: 30px;
+            color: var(--dark-color);
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 3px 0 0 3px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .newsletter-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 0 3px 3px 0;
+        }
+        
+        .newsletter-btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 70px 0 20px;
+        }
+        
+        .footer-top {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-column h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+            bottom: -10px;
+            left: 0;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .footer-logo span {
+            color: var(--primary-color);
+        }
+        
+        .footer-social {
+            display: flex;
+        }
+        
+        .footer-social a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-social a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-payment {
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-payment img {
+            height: 30px;
+            margin-right: 10px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-payment img:hover {
+            opacity: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .product-grid, .collection-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .footer-top {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-title {
+                font-size: 42px;
+            }
+            
+            .hero-subtitle {
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .product-grid, .collection-grid, .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .philosophy-container {
+                flex-direction: column;
+            }
+            
+            .philosophy-text {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            .hero-content {
+                text-align: center;
+                margin-bottom: 80px;
+            }
+            
+            .hero-title, .hero-subtitle {
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links, .nav-icons {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .product-grid, .collection-grid, .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-content {
+                width: 80%;
+            }
+            
+            .hero-image {
+                position: static;
+                width: 100%;
+                margin-top: 30px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero {
+                height: auto;
+                padding: 100px 0 50px;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-input {
+                border-radius: 3px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-btn {
+                border-radius: 3px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-container">
+                <a href="#" class="logo">LUXE<span>.</span></a>
+                <nav class="nav-menu">
+                    <ul class="nav-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Shop</a></li>
+                        <li><a href="#">Collections</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="nav-icons">
+                    <a href="#" class="search-icon"><i class="fas fa-search"></i></a>
+                    <a href="#" class="wishlist-icon"><i class="far fa-heart"></i></a>
+                    <a href="#" class="cart-icon"><i class="fas fa-shopping-bag"></i></a>
+                    <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Elevate Your Senses with Timeless Beauty</h1>
+                <p class="hero-subtitle">Discover our curated collection of premium beauty and scent products designed to transform your daily rituals into moments of pure indulgence.</p>
+                <a href="#" class="hero-btn">Explore Collection</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://picsum.photos/seed/luxebeauty/800/1200.jpg" alt="Luxury Beauty and Scents">
+        </div>
+    </section>
+
+    <section class="featured">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/seed/luxe1/600/800.jpg" alt="Elegant Perfume">
+                        <div class="product-overlay">
+                            <div class="product-view">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <p class="product-category">Fragrance</p>
+                        <h3 class="product-name">Ethereal Bloom</h3>
+                        <p class="product-price">$95.00</p>
+                        <button class="product-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/seed/luxe2/600/800.jpg" alt="Luxury Skincare">
+                        <div class="product-overlay">
+                            <div class="product-view">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <p class="product-category">Skincare</p>
+                        <h3 class="product-name">Vitality Serum</h3>
+                        <p class="product-price">$120.00</p>
+                        <button class="product-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/seed/luxe3/600/800.jpg" alt="Exclusive Perfume">
+                        <div class="product-overlay">
+                            <div class="product-view">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <p class="product-category">Fragrance</p>
+                        <h3 class="product-name">Moonlit Gardenia</h3>
+                        <p class="product-price">$185.00</p>
+                        <button class="product-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/seed/luxe4/600/800.jpg" alt="Premium Beauty Collection">
+                        <div class="product-overlay">
+                            <div class="product-view">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <p class="product-category">Makeup</p>
+                        <h3 class="product-name">Pearlescent Eye Shadow</h3>
+                        <p class="product-price">$55.00</p>
+                        <button class="product-btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="philosophy">
+        <div class="container">
+            <div class="philosophy-container">
+                <div class="philosophy-text">
+                    <h2 class="philosophy-title">Our Philosophy</h2>
+                    <p class="philosophy-description">For over two decades, LUXE has been dedicated to the art of enhancing beauty and creating aromatic experiences that transcend the ordinary. We believe that true luxury lies in the harmony of exceptional quality, natural ingredients, and timeless elegance.</p>
+                    <p class="philosophy-description">Our products are meticulously crafted using traditional techniques combined with cutting-edge innovation, resulting in a collection that speaks to discerning tastes and a desire for authentic experiences.</p>
+                    <div style="margin-top: 30px;">
+                        <a href="#" class="hero-btn" style="display: inline-block;">Learn More</a>
+                    </div>
+                </div>
+                <div class="philosophy-image">
+                    <img src="https://picsum.photos/seed/luxephilosophy/600/800.jpg" alt="Our Philosophy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="collections">
+        <div class="container">
+            <h2 class="section-title">Collections</h2>
+            <div class="tabs">
+                <button class="tab-item active" data-tab="all">All</button>
+                <button class="tab-item" data-tab="fragrance">Fragrance</button>
+                <button class="tab-item" data-tab="skincare">Skincare</button>
+                <button class="tab-item" data-tab="makeup">Makeup</button>
+            </div>
+            <div class="collection-grid">
+                <div class="collection-item" data-category="fragrance">
+                    <img src="https://picsum.photos/seed/collection1/600/800.jpg" alt="Signature Collection">
+                    <div class="collection-overlay">
+                        <div>
+                            <h3 class="collection-name">Signature Collection</h3>
+                            <a href="#" class="collection-link">Shop Now →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collection-item" data-category="skincare">
+                    <img src="https://picsum.photos/seed/collection2/600/800.jpg" alt="Rituals of Opulence">
+                    <div class="collection-overlay">
+                        <div>
+                            <h3 class="collection-name">Rituals of Opulence</h3>
+                            <a href="#" class="collection-link">Shop Now →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collection-item" data-category="makeup">
+                    <img src="https://picsum.photos/seed/collection3/600/800.jpg" alt="Artisanal Makeup">
+                    <div class="collection-overlay">
+                        <div>
+                            <h3 class="collection-name">Artisanal Makeup</h3>
+                            <a href="#" class="collection-link">Shop Now →</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="collection-item" data-category="fragrance">
+                    <img src="https://picsum.photos/seed/collection4/600/800.jpg" alt="Journey Through Scent">
+                    <div class="collection-overlay">
+                        <div>
+                            <h3 class="collection-name">Journey Through Scent</h3>
+                            <a href="#" class="collection-link">Shop Now →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="new-arrivals">
+        <div class="container">
+            <h2 class="section-title">New Arrivals</h2>
+            <div class="product-cards">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/seed/new1/600/800.jpg" alt="New Arrival">
+                        <div class="product-overlay">
+                            <div class="product-view">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <p class="product-category">Fragrance</p>
+                        <h3 class="product-name">Velvet Night</h3>
+                        <p class="product-price">$135.00</p>
+                        <button class="product-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/seed/new2/600/800.jpg" alt="New Arrival">
+                        <div class="product-overlay">
+                            <div class="product-view">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <p class="product-category">Skincare</p>
+                        <h3 class="product-name">Radiance Mask</h3>
+                        <p class="product-price">$75.00</p>
+                        <button class="product-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://picsum.photos/seed/new3/600/800.jpg" alt="New Arrival">
+                        <div class="product-overlay">
+                            <div class="product-view">
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-details">
+                        <p class="product-category">Makeup</p>
+                        <h3 class="product-name">Velvet Blush Pot</h3>
+                        <p class="product-price">$68.00</p>
+                        <button class="product-btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="category">
+        <div class="container">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="category-grid">
+                <div class="category-item">
+                    <img src="https://picsum.photos/seed/cat1/600/800.jpg" alt="Fragrance">
+                    <div class="category-overlay">
+                        <div>
+                            <h3 class="category-name">Perfumes</h3>
+                            <div class="category-description">Explore our rare fragrances</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <img src="https://picsum.photos/seed/cat2/600/800.jpg" alt="Skincare">
+                    <div class="category-overlay">
+                        <div>
+                            <h3 class="category-name">Skincare</h3>
+                            <div class="category-description">Reveal your radiant skin</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <img src="https://picsum.photos/seed/cat3/600/800.jpg" alt="Makeup">
+                    <div class="category-overlay">
+                        <div>
+                            <h3 class="category-name">Makeup</h3>
+                            <div class="category-description">Artistry in every application</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-item">
+                    <img src="https://picsum.photos/seed/cat4/600/800.jpg" alt="Essentials">
+                    <div class="category-overlay">
+                        <div>
+                            <h3 class="category-name">Essentials</h3>
+                            <div class="category-description">Daily rituals elevated</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-container">
+                <h2 class="newsletter-title">Be the First to Know About Exclusive Drops</h2>
+                <p class="newsletter-description">Subscribe to our newsletter and receive the latest news, product launches and special offers.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" class="newsletter-input">
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-column">
+                    <h3>LUXE<span>.</span></h3>
+                    <p style="color: #aaa; margin-bottom: 20px; line-height: 1.6;">Crafting premium beauty and scents for over 20 years. Our commitment to excellence ensures every product delivers an exceptional experience.</p>
+                    <p style="color: #aaa; margin-bottom: 20px; line-height: 1.6;">With a legacy built on quality, craftsmanship, and devotion to enhancing beauty, LUXE has become the go-to destination for those who appreciate the finer things in life.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Shop</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Featured Products</a></li>
+                        <li><a href="#">Fragrances</a></li>
+                        <li><a href="#">Skincare</a></li>
+                        <li><a href="#">Makeup</a></li>
+                        <li><a href="#">Accessories</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Information</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Story</a></li>
+                        <li><a href="#">Ethics & Values</a></li>
+                        <li><a href="#">Sustainability</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--primary-color);"></i> 123 Luxury Avenue, Beverly Hills, CA 90210</li>
+                        <li><i class="fas fa-phone" style="margin-right: 10px; color: var(--primary-color);"></i> +1 (800) 123-4567</li>
+                        <li><i class="fas fa-envelope" style="margin-right: 10px; color: var(--primary-color);"></i> info@luxebrand.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-left">
+                    <div class="footer-logo">LUXE<span>.</span></div>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+                <div class="footer-right">
+                    <p style="color: #aaa; font-size: 14px;">© 2023 LUXE. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Smooth scrolling for all anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Collection tabs functionality
+        const tabButtons = document.querySelectorAll('.tab-item');
+        const collectionItems = document.querySelectorAll('.collection-item');
+        
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                button.classList.add('active');
+                
+                const tabName = button.getAttribute('data-tab');
+                
+                // Show/hide collection items based on tab
+                collectionItems.forEach(item => {
+                    if (tabName === 'all' || item.getAttribute('data-category') === tabName) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Mobile menu functionality
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.style.display = navMenu.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Initialize tabs - make first tab active
+        document.querySelectorAll('.tab-item')[0].click();
+    </script>
+</body>
+</html>
+```
+
+This landing page for a luxury beauty and scent brand includes:
+
+1. A fixed header with logo, navigation links, and icons for search, wishlist, and cart
+2. A stunning hero section with a gradient overlay and call-to-action button
+3. Featured products section with hover effects
+4. "Our Philosophy" section highlighting the brand's values
+5. Collections section with interactive tabs
+6. New arrivals section
+7. Shop by category section
+8. Newsletter subscription form
+9. Comprehensive footer with contact information and social links
+
+The design uses a sophisticated color palette with gold accents to convey luxury. It incorporates elegant typography from Google Fonts (Playfair Display for headings and Poppins for body text), smooth hover animations, and fully responsive layout that looks stunning on all devices.
+
+The page has interactive elements including a tab system for collections, product cards with view options, and navigation that collapses into a mobile-friendly format on smaller screens.
